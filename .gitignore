@@ -1,0 +1,5 @@
+*.txt
+.directory
+_.kdev4/*
+
+
