@@ -1,0 +1,16 @@
+/**
+  \defgroup amosworkbenchproject_plugin amosworkbenchproject.plugin Plugin
+  \ingroup MITKPlugins
+
+  \brief Describe your plugin here.
+  
+*/
+
+/**
+  \defgroup amosworkbenchproject_plugin_internal Internal
+  \ingroup amosworkbenchproject_plugin
+
+  \brief This subcategory includes the internal classes of the amosworkbenchproject.plugin plugin. Other
+  plugins must not rely on these classes. They contain implementation details and their interface
+  may change at any time. We mean it.
+*/

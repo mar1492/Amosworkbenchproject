@@ -1,0 +1,7 @@
+PROJECT(amosworkbenchproject_app)
+
+mitk_create_plugin(
+  EXPORT_DIRECTIVE AMOSWORKBENCH_APP_EXPORT
+  EXPORTED_INCLUDE_SUFFIXES src
+  MODULE_DEPENDS MitkQtWidgetsExt
+)

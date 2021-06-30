@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/App">
+        <file>icon_research.xpm</file>
+        <file>AmosWorkbenchLogo.png</file>
+    </qresource>
+</RCC>

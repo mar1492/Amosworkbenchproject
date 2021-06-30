@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  
+  <extension point="org.blueberry.ui.views">
+    <view id="amosworkbenchproject.views.amosworkbenchview"
+          name="Amos Automatic Segmentation"
+          class="QmitkAmosWorkbenchView"
+          icon="resources/icon.xpm" />
+    
+    <view id="amosworkbenchproject.views.amosworkbenchview.segmentation"
+      name="Amos Postprocessing"
+      category="Segmentation"
+      icon="resources/segmentation.png"
+      class="QmitkSegmentationView" >
+      <description>Allows the segmentation of images using different tools.</description>
+      <keywordReference id="amosworkbenchproject.views.amosworkbenchview.segmentation.ViewKeyword"/>
+    </view>    
+  </extension>
+  
+  <extension point="org.blueberry.ui.preferencePages">
+    <page id="amosworkbenchproject.views.amosworkbenchview.SegmentationPreferencePage" name="Segmentation" class="QmitkSegmentationPreferencePage">
+      <keywordreference id="amosworkbenchproject.views.amosworkbenchview.SegmentationPreferencePageKeywords"></keywordreference>
+    </page>
+  </extension> 
+   <extension point="org.blueberry.ui.keywords">
+    <keyword id="amosworkbenchproject.views.amosworkbenchview.SegmentationPreferencePageKeywords" label="data manager"></keyword>
+  </extension>   
+  <extension point="org.mitk.gui.qt.datamanager.contextMenuActions">
+    <contextMenuAction nodeDescriptorName="ImageMask" label="Create polygon model" icon="" smoothed="false" class="QmitkCreatePolygonModelAction" />
+    <contextMenuAction nodeDescriptorName="ImageMask" label="Create smoothed polygon model" icon="" smoothed = "true" class="QmitkCreatePolygonModelAction" />
+<!--     <contextMenuAction nodeDescriptorName="ImageMask" label="Autocrop" icon="" class="QmitkAutocropAction" /> -->
+  </extension>  
+
+  <extension point="org.blueberry.ui.keywords">
+    <keyword id="org.mitk.views.segmentation.ViewKeyword"  label="Segmentation" /> 
+  </extension>
+</plugin>

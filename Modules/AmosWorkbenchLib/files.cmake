@@ -1,0 +1,48 @@
+set(CPP_FILES
+    Interactions/mitkFromBCToACTool.cpp
+    Interactions/myMitkSetRegionTool.cpp
+    Interactions/mitkeraseregiontool3d.cpp
+    Interactions/diffslicelistoperation.cpp
+    Interactions/diffslicelistoperationapplier.cpp
+    Interactions/myMitkPickingTool.cpp
+    amosprocessdirectory.cpp
+    amosprocesscase.cpp
+    amosprocesscasethreaded.cpp
+    amosprocesscaseparallel.cpp
+    utils.cpp
+    levenbergmarquardt.cpp
+    imagefilters.cpp
+    regionproperties.cpp
+    tests.cpp
+    itkSkeletonizeBaseImageFilter.cxx
+    itkSpecialSkeletonPointsImageFilter.cxx
+    svmclassifier.cpp
+    logsender.cpp
+    amositkimageio.cpp
+    amosniftiimageio.cpp
+    amosModuleActivator.cpp
+    libsvm/svm.cpp
+    internalprocessdirectory.cpp
+    internalprocesscase.cpp
+)
+
+#usFunctionGenerateModuleInit(CPP_FILES)
+
+set(MOC_H_FILES
+    amosprocessdirectory.h
+    amosprocesscase.h
+    amosprocesscasethreaded.h
+    amosprocesscaseparallel.h
+    logsender.h
+    internalprocessdirectory.h
+    internalprocesscase.h
+)
+
+set(RESOURCE_FILES
+    frombc2ac.png
+    frombc2ac_cursor.png
+    Erase_48x48.png
+    Erase_Cursor_32x32.png
+    Pick_48x48.png
+    Pick_cursor_32x32.png   
+)

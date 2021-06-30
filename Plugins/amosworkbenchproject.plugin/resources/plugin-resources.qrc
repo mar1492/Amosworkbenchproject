@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/segmentation">
+        <file>btnNew.png</file>
+        <file>segmentation.png</file>
+        <file>svmtest2D.model</file>
+        <file>svmtest2D.scale</file>
+        <file>svmtest3D.model</file>
+        <file>svmtest3D.scale</file>
+    </qresource>
+    <qresource prefix="/database/icons">
+        <file>iconminus.png</file>
+        <file>iconplus.png</file>
+        <file>iconcheck.png</file>
+        <file>iconuncheck.png</file>
+        <file>eraser.png</file>
+        <file>reprocess.png</file>
+    </qresource>
+    <qresource prefix="/database">
+        <file>base.html</file>
+        <file>processdata.apd</file>
+    </qresource>
+</RCC>

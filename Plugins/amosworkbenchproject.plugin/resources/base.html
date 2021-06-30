@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <STYLE TYPE=text/css>
+        * {
+            font-family: sans-serif;
+        }
+        .anchor:target
+        {
+            padding-top: 80px;
+        }
+        nav {
+            display: block;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            background: #ddd;
+            z-index: 9999;
+            top: 0
+        }
+        nav ul {
+            margin: 0;
+            padding:0;
+            list-style: none;
+        }
+        .nav a {
+            display:block;
+            background: #fff;
+            color:DeepSkyBlue;
+            text-decoration: none;
+            padding: .4em .4em;
+            font-family:  "Arial";
+            position: relative;
+            border-radius:6px;
+        }
+        .nav{
+            vertical-align: top;
+            display: inline-block;
+        }
+        .content {
+            position:absolute;
+            background: #fff;
+            width: 100%;
+            margin-top:70px
+        }
+        .nav li{position: relative;}
+        .nav > li {
+            float:left;
+            border: 4px #ddd solid;
+            margin-right: 2px;
+        }
+        .nav > li > a {
+            margin-bottom:1px;
+        }
+        .nav > li:hover , .nav > li:hover >a{  border-bottom-color:DeepSkyBlue;}
+        .nav li:DeepSkyBlue > a { color:DeepSkyBlue; }
+        .nav ul {
+        position: absolute;
+        white-space: nowrap;
+        border-bottom: 5px solid  DeepSkyBlue;
+        z-index: 1;
+        left: -99999em;
+        }
+        .nav > li:hover > ul {
+        left: auto;
+        padding-top: 5px  ;
+        min-width: 100%;
+        }
+        .nav > li > a:first-child:nth-last-child(2):before {
+        border-top-color: #ddd;
+        }
+        .nav > li:hover > a:first-child:nth-last-child(2):before {
+        border: 5px solid transparent;
+        border-bottom-color: DeepSkyBlue;
+        margin-top:-5px
+        }
+
+        h1 {color: DeepSkyBlue}
+        h2 {color: DeepSkyBlue}
+        h3 {color: DeepSkyBlue}
+        h4 {color: DeepSkyBlue}
+        h5 {color: DeepSkyBlue}
+        h6 {color: DeepSkyBlue}
+        <!-- .indented0 { padding-left: 0pt; padding-right: 0pt; } -->
+        <!-- .indented1 { padding-left: 20pt; padding-right: 10pt; } -->
+        <!-- .indented2 { padding-left: 40pt; padding-right: 10pt; } -->
+        <!-- .indented3 { padding-left: 60pt; padding-right: 10pt; } -->
+        <!-- .indented4 { padding-left: 80pt; padding-right: 10pt; } -->
+        <!-- .indented5 { padding-left: 100pt; padding-right: 10pt; } -->
+        <!-- .indented6 { padding-left: 120pt; padding-right: 10pt; } -->
+        <!-- .indented10 { padding-left: 160pt; padding-right: 10pt; } -->
+    </STYLE>
+    <title></title>
+	</head>
+
+	<body>
+        <nav>
+        <ul class="nav">
+            <li><a href="#project">Project</a></li>
+            <li><a href="#scans">Scans</a></li>
+            <li><a href="#annotated">Annotated images</a></li>
+            <li><a href="#extern">Extern images</a></li>
+            <li><a href="#recons">Reconstructions</a>            
+            <ul>
+            </ul>
+            </li>
+            <li><a href="#segments">Segmentations</a>
+            <ul>
+            </ul>            
+            </li>
+            <li><a href="#subjects">Subjects</a>
+        </ul>
+        </nav>
+        <div class="content">
+        </div>
+	</body>
+</html>        

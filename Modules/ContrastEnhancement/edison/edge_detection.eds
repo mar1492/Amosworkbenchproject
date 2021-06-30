@@ -1,0 +1,33 @@
+/* 
+Performs confidence based edge detection. 
+*/
+
+//Specify the edge detection parameters 
+GradientWindowRadius = 5;
+MinimumLength = 5; 
+NmxRank = 0.5; 
+NmxConf = 0.5; 
+NmxType = ARC; 
+HysterisisHighRank = 0.9; 
+HysterisisHighConf = 0.9; 
+HysterisisHighType = BOX; 
+HysterisisLowRank = 0.8; 
+HysterisisLowConf = 0.8; 
+HysterisisLowType = CUSTOM; 
+CustomCurveHystLow = {(0.4,0.7), (0.6,0.3)};
+
+//Display progress 
+DisplayProgress ON;
+
+//Load an image to perform edge detection 
+Load('/media/jose/Linux/matlab/edison/test_S0082_fl.pgm', IMAGE);
+
+//Perform edge detection 
+EdgeDetect;
+
+//Save the resulting edge map 
+Save('edgemap.pgm', PGM, EDGES);
+Save('/media/jose/Linux/matlab/edison/gradientmap_fl.txt', MATLAB_ASCII, GRADIENT_MAP);
+//Save('confidencemap.txt', MATLAB_ASCII, CONFIDENCE_MAP);
+
+//done.  

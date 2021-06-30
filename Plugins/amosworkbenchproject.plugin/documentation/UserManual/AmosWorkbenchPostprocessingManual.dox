@@ -1,0 +1,185 @@
+/**
+\page amosworkbenchproject_pluginpostprocess AmosWorkbench Postprocessing Tools
+
+\imageMacro{QmitkSegmentation_Icon.png, "Icon of the Amos Postprocessing View",2.00}
+
+<i>The AmosWorkbench postprocessing tools uses only a subset of the MITK segmentation tools and utilities, 3D original utilities are not used and some of 2D original tools neither, also clipping plane features are not used. It adds a tool for copying blobs from before classifier window (Axial BC) to after classifier window (Axial AC)</i>
+
+\tableofcontents
+
+\section amosworkbenchproject_pluginpostprocessUserManualOverview Overview
+
+The <b>Amos Postprocessing View</b> allows you to postprocess segmentations of white matter hyperintensities/lessions (WMH/WML) previously processed with Amos algorithm in MR images of the human brain via the <b>Amos Postprocessing View</b>
+
+\imageMacro{AmosSegmentation_IMGApplication.png, "Postprocessing Segmentation Plugin consisting of the Amos Postprocessing View", 16.00}
+
+The postprocessing view offers a number of preferences which can be set via the application preferences dialog:
+
+\imageMacro{AmosSegmentation_IMGPreferences.png, "Preferences for Postprocessing Segmentation", 10.00}
+
+The following preferences can be set:
+<ul>
+  <li> <b>Slim view:</b> Allows you to show or hide the tool button description of the Segmentation View
+  <li> <b>2D display:</b> Specify whether the segmentation is drawn as outline or as a transparent overlay
+  <li> <b>Data node selection mode:</b> If activated the Data Selection combo box is always sychronized with the Data Manager selection. 
+  <li> <b>Smoothed surface creation:</b> Set certain smoothing parameters for surface creation
+</ul>
+
+\section amosworkbenchproject_pluginpostprocessUserManualTechnical Technical Issues
+
+The Postprocessing perspective makes a number of assumptions. To know what this view can be used for, it will help you to know that:
+<ul>
+  <li> Images must be 3D 
+  <li> Images must be single-values  MRI. Images from color doppler or photographic (RGB) images are not supported
+  <li> Segmentations are handled as binary images of the same extent as the original image
+</ul>
+
+\section amosworkbenchproject_pluginpostprocessUserManualImageSelection Image Selection
+
+The Postprocessing perspective makes use of the Data Manager view to give you an overview of all images and segmentations.
+
+\imageMacro{AmosSegmentation_IMGSelection.png, "Data Manager is used for selecting the BC and AC segmentations. The reference image is selected in the drop down box of the control area.",5.50}
+
+To select the reference image (e.g. the original bias corrected MR image) use the patient image drop down box in the Data Selection area of the Postprocessing view. The segmentation images selected in the Data Manager are displayed below in the postprocessing drop down box.
+By default the auto selection mode is enabled, which always keeps the selection of the postprocessing drop down box in synch with the selection in the data manager.
+If you disable the auto selection mode the selection of the right segmentation image has to be done via the drop down box.
+Some items of the graphical user interface might be disabled when no image is selected or the selected images do not fit to the patient image's geoemtry.
+In any case, the application will give you hints if some selections are needed.
+
+\section amosworkbenchproject_pluginpostprocessUserManualToolOverview Tool overview
+
+AmosWorkbench comes with a comprehensive set of manual segmentation tools. All tools, except for BC to AC tool and the Pick3D, only work on the Axial AC window. The BC to AC tool only works on the Axial BC window. The Pick3D tool works on both windows.
+
+\imageMacro{AmosSegmentation_ToolOverview.png, "An overview of the existing tools in AmosWorkbench",5.50}
+
+\section amosworkbenchproject_pluginpostprocessUserManualManualKringeling Manual Contouring
+
+With manual contouring you define which voxels are part of the AC segmentation and which are not.
+This allows you to create or refine AC segmentations of any WMH that you may find in an image, you can also pass BC segmentation blobs to the AC segmentation.
+
+\subsection amosworkbenchproject_pluginpostprocessUserManualManualKringeling1 Selecting Segmentations for Editing
+
+This application recognizes whether a segmentation is AC or BC type by reading the nifti image header, the Amos segmentation algorithm writes this information. Segmentations without this information can not be used within the postprocessing tool. You have to load a patient image an the correspondent AC and BC segmentations in order to enable the postprocessing tools. The patient image has to be a flair bias corrected image due to the Amos segmentation algorithm has to work on this kind of images. If you are using the Amos segmentation algorithm from the Loaded case tab in the Amos Automatic Segmentation view all these images are loaded automatically when the algorithm completes its job.
+
+You select a segmentation by clicking it in the tree view of Data Manager. Note that segmentations could be displayed as independent items or sub-items of "their" flair image.
+If you need to edit segmentations that are not displayed as sub-items, you can click both the flair image AND the segmentations while holding down CTRL or for Mac OS X the CMD on the keyboard.
+If you only load the three proper images, flair and AC and BC segmentations, in the Data Manager view, they are automatically loaded in postprocessing view. Preferible the loading order has to be first flair image and later the segmentations in any order. If you load the flair image after a segmentation this segmentation will be occluded by the flair image, then you have to drag in the Data Manager view the flair image below the segmentations in order to make segmentations visible.
+
+During the loading process you will be asked for choosing a file reader. Pup-up menu options are ITK FixedNiftiImage or ITK AmosNiftiImage, <b>you must choose ITK AmosNiftiImage</b> if you want to use postprocessing tools properly. Mark "Apply to the next files with same type" if you are loading several files in order not to be asked about file reader several times. ITK FixedNiftiImage loads images using their original orientation, ITK AmosNiftiImage loads images using RAS orientation. For saving images automatically loaded after segmentation we use the opposite criteria: ITK FixedNiftiImage saves images using RAS orientation, ITK AmosNiftiImage load images using their original orientation. So <b>you should usually save edited segmentation images using ITK AmosNiftiImage</b>.
+
+When a selection is made, the Segmentation View will hide all but the selected segmentations and the corresponding flair image.
+If there are multiple segmentations, the remaining will be kept in the Data Manager, you can make them visible at any time by selecting them, it should be considered that they have to be AC or BC type to be listed at the tool.
+
+Sometimes a message about reinit segmentations could appear in the postprocessing view, in this case select the AC and BC segmentation images in the Data Manager view, left click and choose Reinit in the pop-up menu, for further information see the DataManager section in the Help view.
+
+\subsection amosworkbenchproject_pluginpostprocessUserManualManualKringeling2 Selecting Editing Tools
+
+To start using one of the editing tools, click its button the the displayed toolbox.
+The selected editing tool will be active and its corresponding button will stay pressed until you click the button again.
+Selecting a different tool also deactivates the previous one.
+
+If you have to delineate a lot of images, you should try using shortcuts to switch tools. Just hit the first letter of each tool to activate it (A for Add, S for Subtract, etc.).
+
+\subsection amosworkbenchproject_pluginpostprocessUserManualManualKringeling3 Using Editing Tools
+
+All of the painting tools work by the same principle: you use the mouse (left button) to click anywhere in a 2D window (AC or BC), move the mouse while holding the mouse button and release to finish the editing action. Other tools works clicking on a blob. Remember that all tools, except for BC to AC tool, only work on the Axial AC window and the BC to AC and Pivck3D tool only works on the Axial BC window.
+
+Multi-step undo and redo is fully supported by all editing tools. Use the application-wide undo button in the toolbar to revert erroneous actions.
+
+\imageMacro{AmosSegmentation_IMGBCtoAC.png, "Before classifier (BC) to after classifier (AC) Tool",7.70}
+
+Click on a BC window blob, not existing in the AC window, and then the blob will appear in the AC window. If you hold for a while the mouse button pressed the area inside of the blob gets coloured in yellow, this effect is for user feedback. If the mouse button is released inside the blob the action is performed, releasing it outside the blob the action is cancelled. To revert this operation use the undo option or the erase tool.
+Using Ctrl+click (Cmd in MAC) the operation is performed on the whole 3D blob. In this case if you use the erase tool to revert the operation press the Ctrl key. For 3D operations feedback displayed in yellow is very interesting for big blobs. In these case 2D blobs apparently disconnected in one slice can be connected through other slices.
+
+\imageMacro{QmitkSegmentation_IMGIconAddSubtract.png, "Add and Subtract Tools",7.70}
+
+Use the left mouse button to draw a closed contour on the AC window. When releasing the mouse button, the contour will be added (Add tool) to or removed (Subtract tool) from the AC segmentation. Using the Add tool you can create new blobls. Using both tool you can refine existing blobs.
+Hold down the CTRL / CMD key to invert the operation (this will switch tools temporarily to allow for quick corrections).
+
+\imageMacro{QmitkSegmentation_IMGIconPaintWipe.png, "Paint and Wipe Tools",7.68}
+
+Use the slider below the toolbox to change the radius of these round paintbrush tools. Move the mouse in the AC window and press the left button to draw or erase pixels.
+As the Add/Subtract tools, holding CTRL / CMD while drawing will invert the current tool's behavior.
+
+<br>
+\imageMacro{QmitkSegmentation_IMGIconCorrection.png, "Correction Tool",3.77}
+
+You do not have to draw a closed contour to use the Correction tool and do not need to switch between the Add and Substract tool to perform
+small corrective changes. The following figure shows the usage of this tool:
+<ul>
+<li> if the user draws a line which starts and ends outside the AC segmentation AND it intersects no other segmentation the endpoints of the line are connected and the resulting contour is filled
+<li> if the user draws a line which starts and ends outside the segmenation a part of it is cut off (left image)
+<li> if the line is drawn fully inside the segmentation the marked region is added to the segmentation (right image)
+</ul>
+
+\imageMacro{QmitkSegmentation_IMGCorrectionActions.png, "Actions of the Correction tool illustrated.",13.50}
+<br>
+\imageMacro{QmitkSegmentation_IMGIconFill.png,"Fill Tool",3.81}
+
+Left-click inside an AC segmentation blob with holes to fill all its holes.
+
+<b>Warning</b> if you left-click outside an AC segmentation blob the whole slice will be cleared and the slice will turn red in the 3D window, remember that you can always undo this undesirable operation, this is a bug from MITK.
+
+\imageMacro{QmitkSegmentation_IMGIconErase.png, "Erase23D Tool",3.79}
+
+This tool removes a connected part of pixels that form an AC segmentation blob. You may use it to remove so called islands (see picture) or to clear a whole slice at once (left-click outside a segmentation). If the mouse button is released inside the blob the action is performed, releasing it outside the blob the action is cancelled. If you hold for a while the mouse button pressed the area inside of the blob gets coloured in yellow, this effect is for user feedback.
+Using Ctrl+click (Cmd in MAC) the operation is performed on the whole 3D blob. For 3D operations feedback displayed in yellow is very interesting for big blobs. In these case 2D blobs apparently disconnected in one slice can be connected through other slices.
+
+\imageMacro{QmitkSegmentation_IMGIconLiveWire.png, "LiveWire Tool",3.01}
+
+The LiveWire Tool acts as a magnetic lasso with a contour snapping to edges of objects.
+
+\imageMacro{QmitkSegmentation_IMGLiveWireUsage.png, "Steps for using LiveWire Tool",16.00}
+
+Using this tool you can create blobs or refine them in AC segmentations.
+
+<ul>
+<li>(1) To start the Tool you have to double click near the edge of the object you want to segment. The initial anchor point will snap to the edge within a 3x3 region.
+<li>(2) Move the mouse. You don't have trace the edge of the object. The contour will automatically snap to it.
+<li>(3) To fix a segment you can set anchor points by single left mouse button click.
+<li>(4) Go on with moving the mouse and setting anchor points.
+<li>(5) To close the contour double click on the initial anchor point.
+<li>(6) After closing the contour can be edited by moving, inserting and deleting anchor points.
+</ul>
+
+The contour will be transfered to its binary image representation by deactivating the tool.
+
+\imageMacro{AmosSegmentation_IMGPick3D.png, "3DPick Tool",3.79}
+
+Ctrl+clicking (Cmd in MAC) on an AC or BC 2D blob, the whole 3D blob is displayed as a polygon model in the 3D window after some seconds. If the mouse button is released inside the blob the action is performed, releasing it outside the blob the action is cancelled. If you hold for a while the mouse button pressed the area inside of the blob gets coloured in yellow, this effect is for user feedback. The 3D blob will appear in the Data Manager view as a child of the corresponding AC or BC image. The 3D blob is named as \<ParentImageName\>_blob3D_x being x an index number. You can change blob color and opacity right clicking on its name, see next figure, and you can change blob name through the Properties View, see the DataManager manual.
+
+\section amosworkbenchproject_pluginpostprocessUserManualPostprocessing Things you can do with segmentations
+
+As mentioned in the introduction, segmentations are never an end in themselves.
+Consequently, the Segmentation view adds a couple of "post-processing" actions to the Data Manager.
+These actions are accessible through the context-menu of segmentations in Data Manager's list view
+
+\imageMacro{QmitkSegmentation_IMGDataManagerContextMenu.png, "Context menu items for segmentations.",10.58}
+
+<ul>
+<li> <b>Create polygon model</b> applies the marching cubes algorithms to the segmentation. This polygon model can be used for visualization in 3D or other things such as stereolithography (3D printing). This feature is shown at this manual first image.
+<li> <b>Create smoothed polygon model</b> uses smoothing in addition to the marching cubes algorithms, which creates models that do not follow the exact outlines of the segmentation, but look smoother.
+<li> <b>Autocrop</b> can save memory. Manual segmentations have the same extent as the flair image, even if the segmentation comprises only a small sub-volume. This invisible and meaningless margin is removed by autocropping.
+</ul>
+
+Other actions can be applied to segmentations via the context menu, see the DataManager section in the Help view. The colors used for AC and BC segmentations can be selected permanently in the main menu Window->Preferences->Editor->AmosWorkbench Multi Widget.
+
+\section amosworkbenchproject_pluginpostprocessSegmentationPropertiesPropertyView Segmentation properties accesible through Properties view
+
+These properties control how a particular segmentation is rendered:
+
+\imageMacro{AmosSegmentation_IMGPropertiesIcon.png, "Properties View Icon", 2.00}
+
+<ul>
+ <li> binary controls whether the image is treated as a binary/segmentation image
+ <li> binaryimage.hoveringannotationcolor controls the colour of the annotation if the segmentation has a property signifying it is hovered over set to true
+ <li> binaryimage.hoveringcolor controls the colour of the segmentation if it has a property signifying it is hovered over set to true
+ <li> binaryimage.selectedannotationcolor controls the colour of the annotation if the segmentation has a property signifying it is selected set to true
+ <li> binaryimage.selectedcolor controls the colour of the segmentation if it has a property signifying it is selected set to true
+ <li> segmentation used by the segmentation view to check whether an image should be treated as a segmentation
+ <li> outline binary controls whether the segmentation is drawn as an outline (on) or solid (off)
+ <li> outline width controls the width of the outline, if it is drawn
+ <li> showVolume controls whether the volume of the segmentation is shown in the 2D views as an annotation
+</ul>
+
+*/

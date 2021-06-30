@@ -1,0 +1,100 @@
+/**
+\page amosworkbenchproject_pluginsegmentation AmosWorkbench Automatic Segmentation
+
+\imageMacro{AmosWorkbench_icon.png, "Icon of the Amos Automatic Segmentation View", 2.00}
+
+\tableofcontents
+
+\section amosworkbenchproject_pluginsegmentationUserManualOverview Overview
+
+The <b>AmosWorkbench Automatic Segmentation Algorithm</b> is applied to a set of images in order to obtain the before classifier (BC) segmentation and the after classifier (AC) segmentation of white matter hyperintensities/lessions (WMH/WML) for each patient case. The interfaces for applying the algorithm are in the <b>Amos Automatic Segmentation View</b>.
+
+The algorithm has two execution modes: the training mode and the classifying mode. In the training mode the algorithm detects possible WMHs, the BC segmentation, and then a support vector machine (SVM) classifier is trained comparing the BC segmentation results against a gold standard made by human experts. In the classifying mode blobs from the BC segmentation are discarded by the classifier given the AC segmentation. At this moment training is not avaliable to regular users, the Amos team is going to establish a protocol for users sharing segmentations with the team. The Amos team will train the app in order to mantain an uniform training framework for making avaliable for all users the same classification files. Training is done using Support Vector Machine framenwork via libSVM software.
+
+The Amos Automatic Segmentation View has two tabs. The first one for applying the algorithm to a set of images from one patient loaded in the Data Manager, the Loaded case tab. The second one, the Database tab, allows users to configure a project for processing subjects images from original scan images to final Amos segmentations. This includes all intermediate steps as create labels images, images bias correction, images coregistration and so on. Using XNAT terminology we named all these images processing as images reconstructions. Amos segmentations are a special type of reconstructions that are implemented inside AmosWorkbench app, other reconstructions are executed using external software as FreeSurfer, SPM, etc. You can run external software by your own or from AmosWorkbench app using scripts, this last feature is yet being implemented.
+
+\section amosworkbenchproject_pluginsegmentationLoadedCase The Loaded Case Tab
+
+\imageMacro{AmosAutomaticSegmentation_IMGLoadedCase.png, "The Loaded Case Tab View and the Data Manger View", 16.00}
+
+Using this interface you can apply the Amos segmentation algorithm in classifying mode to only one patient case. Images can be in the same or different directories.
+
+\subsection amosworkbenchproject_pluginsegmentationLoadedCaseSelection Image Selection
+
+In this tab images selection is synchronized with the Data Manager, thus to select images in this tab they have to be previously loaded using the Data Manager.
+
+During the loading process you will be asked for choosing a file reader. Pup-up menu options are ITK FixedNiftiImage or ITK AmosNiftiImage, <b>you must choose ITK FixedNiftiImage</b>. Mark "Apply to the next files with same type" if you are loading several files in order not to be asked about file reader several times. ITK FixedNiftiImage loads images using their original orientation, ITK AmosNiftiImage loads images using RAS orientation. For saving images automatically loaded after segmentation we use the opposite criteria: ITK FixedNiftiImage saves images using RAS orientation, ITK AmosNiftiImage load images using their original orientation. So <b>you should usually save edited segmentation images using ITK AmosNiftiImage</b>.
+
+Load flair, T1 and brain labels images for the patient in the Data Manager. You can also load a mask image also if you need, mask image are used for not taking into account infarted areas. The Loaded case tab view can laod automatically these images in their proper places if their names meet some conditions: flair name has to contain "flair" or "fl", T1 name has to contain "t1", brain labels name has to contain "lb" or "label" and mask name has to contain "mask". Conditions are case insensitive. If these conditions are not met you have to manually set images in their proper places. You even can load more images via the Data Manager and to select those you are going to use in the Loaded case tab. In order to use a mask image you have to mark the Mask image check box.
+
+\subsection amosworkbenchproject_pluginsegmentationLoadedCaseParameters Parameters Edition
+
+You need to check the Enable edition check box in order to edit segmentation parameters.
+
+\subsection amosworkbenchproject_pluginsegmentationLoadedCaseRun Algorithm Execution
+
+When all images are properly loaded the Run button becomes enable, then you can press it to execute Amos algorithm in classifiyng mode. From this tab you cannot execute Amos algorithm in training mode given that for training you need a considerable number of cases. While the algorithm is running you can see its evolution in the progress bar. When the execution is finished a message box informs you and after you press its button the flair image and the resulting AC and BC segmentations are loaded in the Data Manager and in the Amos Postprocessing View. Now you can use the Amos Postprocesing Tools. All other images are discarded from the Data Manager.
+
+The Threshold field appearing in this tab has no effect at this moment.
+
+The algorithm execution uses the ideal number of threads that can be run on the system.
+
+\section amosworkbenchproject_pluginsegmentationDatabase The Database Tab
+
+\imageMacro{AmosDatabase_IMG.png, "The Database Tab View", 16.00}
+
+Using this interface you can create, modify and execute a project based on subjects original scan images going throw multiple processing steps until to get Amos segmentation images. The project structure appears as a tree view with projects items. The project items are: Project data, Scans, Subjects, Annotated images, Reconstructions, Segmentations, External images and Process graph. Items has contextual menus that are accesible rigth clicking on them, items are described below. The project information is saved as a XML file and users can see this information as a html page in a user friendly way.
+
+\subsection amosworkbenchproject_pluginsegmentationDatabaseProjecDirectories Project Directories Structures
+
+Two directories structure types are supported by Amos Database: the procedures based structure and the subjects based structure, see figures. Basically in the first case there are main directories for every procedure: original scans, annotated images, external images, reconstructions and segmentations outputs with subdirectories for each subject id inside these main directories containing subjects images. In the second case main directories are for each subject id containing inner subdirectories for the procedures mentioned above including subjects images. This second structure is similar to a XNAT project directories structure.
+
+\imageMacro{AmosDatabaseDirectories_IMG.png, "The Database Direcories Structure Types", 16.00}
+
+If you use the subjects based structure type you can put all subjects id directories inside a directory named e. g. subjects and this last directory inside the project main directory. The existence of the main project directory is mandatory. For the procedures based structure the main project directory is not mandatory.
+
+These two structures are flexible. For procedures based structure all or several main directories can be the same. For subjects based structure all or several subdirectories can be the same. The only true restriction is that each subject id has to have its own directory.
+
+\subsection amosworkbenchproject_pluginsegmentationDatabaseProjecMainItem Project Main Item
+
+First time you access to the Database view this item is the only appearing item, right clicking on it its contextual menu appears. The menu has four items: Save project, Load project, New project and Html view. The first time you access to Database view only Load and New actions are enabled. After you load an existing projects or start a new one all these actions become enabled and the whole tree structure appears.
+
+
+\subsection amosworkbenchproject_pluginsegmentationDatabaseSelection Directories and Image Names Selection
+
+In the directories area you can select a parent directory containing subdirectories, one subdirectory per case. You can also select a directory containing only one case. In the images area you can set names for flair, T1, brain labels, mask and expert annotated images. Directories and image names has to follow this protocol:
+
+<ul>
+<li> Patient: a parent directory containing subdirectories with flair, T1 and brains labels images of each case. Or a single directory with these images if you are processing a unique case.
+<li> Mask: a parent directory containing subdirectories with the optional mask image of each case. Or a single directory with this image if you are processing a unique case. 
+<li> Expert: a parent directory containing subdirectories with the expert annotated image of each case. Or a single directory with this image if you are processing a unique case. The Expert option only appears if the Expert annotation check box is marked, in this case the Amos algorithm will be executed in training mode.
+<li> Output: a parent directory where the output segmentations will be placed. The application will create subdirectories for each case processed even if only one case is processed. If the output subdirectories exist previously the output will use them overwriting existing images if these images have the output names used by the algorithm. The output names used by the algorithm are Amos_AC.nii and Amos_BC.nii.
+<li> If you are using a parent directories with subdirectories these subdirectories have to be the same names in each parent directory. The algorithm reads the subdirectories names in the patient parent directory and looks for other images type subdirectories having identical names, cases with different names are skipped.
+<li> If you are processing more than one case the different image types have to have the same name for each case. Names are set in the images area.
+</ul>
+
+\subsection amosworkbenchproject_pluginsegmentationDatabaseParams Algorithm Parameters
+
+At this moment every algorithm parameter can be edited in the parameters area, although only the first four parameters should be edited by the user. In order to edit parameter values you have to mark the Enable check box.
+
+\subsection amosworkbenchproject_pluginsegmentationDatabaseRun Algorithm Execution
+
+If directories and images names are properly set in their respective areas the Run button becomes enable. Then you can start the algorithm execution. 
+You can set the number of threads used during execution. The default value is the ideal number of threads that can be run on the system, this is the maximun value you can use.
+When several cases are processed two progress bars are shown, one displaying the percent of started cases and the other one displaying the percent of finished cases. When only a case is processed only one progress bar is shown displaying the process evolution.
+
+\section amosworkbenchproject_pluginsegmentationAdvanced The Advanced Tab
+
+\imageMacro{AmosAdvanced_IMG.png, "The Advanced Tab", 10.00}
+
+If Mode 3D check box is unchecked the segmentation is performed individually for each slice, that is in a 2D way, checking it segmentation is performed in a 3D way. 2D way is advisable for images with slices separated by 2mm or more.
+
+When Show filters time is checked running time for images filters are shown in the Loggin tab and in the console. This a feature for testing algorithm performance, it does not need to be used by regular users.
+
+In Max. threads spin box you can set the maximun number of threads to be used in Loaded Case tab runs.
+
+\section amosworkbenchproject_pluginsegmentationMessagesToUser Warning Messages window
+
+For warning messages about cases that con not be processed for some reason there exists a specific window named Warning Messages window. This window only appears in such situations.
+
+*/

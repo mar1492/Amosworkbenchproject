@@ -1,0 +1,5 @@
+set(Plugin-Name "AmosWorkbench Plugin")
+set(Plugin-Version "1.0.0")
+set(Plugin-Vendor "AmosWorkbench Company")
+set(Plugin-ContactAddress "http://www.amosworkbenchproject.com")
+set(Require-Plugin org.mitk.gui.qt.common org.mitk.gui.qt.datamanager)
