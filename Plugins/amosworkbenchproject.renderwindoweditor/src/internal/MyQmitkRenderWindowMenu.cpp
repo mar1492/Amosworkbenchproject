@@ -214,7 +214,13 @@ void MyQmitkRenderWindowMenu::UpdateLayoutDesignList(LayoutDesign layoutDesign)
         {
             m_UpACandDownBCLayoutAction->setEnabled(false);
             break;
-        }   
+        }  
+        // JCAM
+        case LayoutDesign::SAGITTAL_UP_CORONAL_DOWN_LAYOUT:
+        {
+            break;
+        }
+        // JCAM
     }
 }
 

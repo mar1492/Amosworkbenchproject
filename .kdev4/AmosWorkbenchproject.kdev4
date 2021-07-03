@@ -7,6 +7,7 @@ Current Build Directory Index=2
 Current Build Directory Index-Host System=2
 Current Build Directory Index-Sistema anfitrión=1
 ProjectRootRelative=./
+Temporary Build Directory Index=2
 
 [CMake][CMake Build Directory 0]
 Build Directory Path=/home/juancarlos/TFG/AmosWorkbenchproject-superbuild
@@ -270,3 +271,6 @@ isExecutable=true
 Abort on First Error=false
 Number Of Jobs=6
 Override Number Of Jobs=true
+
+[Project]
+VersionControlSupport=kdevgit

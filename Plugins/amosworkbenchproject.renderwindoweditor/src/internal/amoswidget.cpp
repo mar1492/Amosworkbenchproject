@@ -58,6 +58,14 @@
 #include "utils.hpp"
 #include "amositkimageio.h"
 
+#define WINDOW_WIDGET_AXIAL_AC  0
+#define WINDOW_WIDGET_AXIAL_BC  1
+#define WINDOW_WIDGET_SAGITTAL  2
+#define WINDOW_WIDGET_AXIAL_PATIENT   3
+#define WINDOW_WIDGET_AXIAL_3D  4
+#define WINDOW_WIDGET_CORONAL   5
+
+
 using namespace mitk;
 
 // AmosWidget::AmosWidget(QWidget* parent, Qt::WindowFlags f,/* mitk::RenderingManager* renderingManager, mitk::BaseRenderer::RenderingMode::Type renderingMode,*/ const QString& name) : QWidget(parent, f, name)/*,
@@ -274,7 +282,7 @@ void AmosWidget::InitializeMultiWidget()
     
     // JCAM
     // SetLayout(2, 3);
-    MITK_INFO << "JCAM. Setting layout to 3 x 2" << endl;
+    MITK_INFO << "Setting layout to 2 x 3" << endl;
     SetLayout(2, 3);
     
     // transfer colors in WorldGeometry-Nodes of the associated Renderer
@@ -287,7 +295,7 @@ void AmosWidget::InitializeMultiWidget()
     mitk::BaseRenderer* rend = mitk::BaseRenderer::GetInstance(ACR);
     m_PlaneNodeAC = rend->GetCurrentWorldPlaneGeometryNode();
 //     m_PlaneNodeAC = mitk::BaseRenderer::GetInstance(GetRenderWindowAC()->GetRenderWindow())->GetCurrentWorldPlaneGeometryNode();
-    m_PlaneNodeAC->SetColor(GetDecorationColor(0));
+    m_PlaneNodeAC->SetColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_AC));
     layer = mitk::IntProperty::New(1000);
     m_PlaneNodeAC->SetProperty("layer",layer);
 
@@ -295,15 +303,15 @@ void AmosWidget::InitializeMultiWidget()
     // MITK 2021
 //     m_PlaneNodeBC = mitk::BaseRenderer::GetInstance(GetRenderWindowBC()->GetRenderWindow())->GetCurrentWorldPlaneGeometryNode();
     m_PlaneNodeBC = mitk::BaseRenderer::GetInstance(GetRenderWindowBC()->renderWindow())->GetCurrentWorldPlaneGeometryNode();
-    m_PlaneNodeBC->SetColor(GetDecorationColor(1));
+    m_PlaneNodeBC->SetColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_BC));
     layer = mitk::IntProperty::New(1000);
     m_PlaneNodeBC->SetProperty("layer",layer);
     
-    // ... of widget 3
+    // ... of widget 4
     // MITK 2021
 //     m_PlaneNodePatient = mitk::BaseRenderer::GetInstance(GetRenderWindowPatient()->GetRenderWindow())->GetCurrentWorldPlaneGeometryNode();
     m_PlaneNodePatient = mitk::BaseRenderer::GetInstance(GetRenderWindowPatient()->renderWindow())->GetCurrentWorldPlaneGeometryNode();
-    m_PlaneNodePatient->SetColor(GetDecorationColor(2));
+    m_PlaneNodePatient->SetColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_PATIENT));
     layer = mitk::IntProperty::New(1000);
     m_PlaneNodePatient->SetProperty("layer",layer);    
     
@@ -313,6 +321,19 @@ void AmosWidget::InitializeMultiWidget()
     m_ParentNodeForGeometryPlanes = mitk::BaseRenderer::GetInstance(GetRenderWindow3D()->renderWindow())->GetCurrentWorldPlaneGeometryNode();
     layer = mitk::IntProperty::New(1000);
     m_ParentNodeForGeometryPlanes->SetProperty("layer",layer);
+    
+    // JCAM. Widget 3 
+    m_PlaneNodeCoronal = mitk::BaseRenderer::GetInstance(GetRenderWindowCoronal()->renderWindow())->GetCurrentWorldPlaneGeometryNode();
+    m_PlaneNodeCoronal->SetColor(GetDecorationColor(WINDOW_WIDGET_CORONAL));
+    layer = mitk::IntProperty::New(1000);
+    m_PlaneNodeCoronal->SetProperty("layer",layer);
+    
+    
+    // JCAM. Widget 6
+    m_PlaneNodeSagittal = mitk::BaseRenderer::GetInstance(GetRenderWindowSagittal()->renderWindow())->GetCurrentWorldPlaneGeometryNode();
+    m_PlaneNodeSagittal->SetColor(GetDecorationColor(WINDOW_WIDGET_SAGITTAL));
+    layer = mitk::IntProperty::New(1000);
+    m_PlaneNodeSagittal->SetProperty("layer",layer);
     
     AddDisplayPlaneSubTree();
     
@@ -433,9 +454,13 @@ QmitkRenderWindow* AmosWidget::GetRenderWindow(unsigned int number) const
         case 1:
             return GetRenderWindowBC();
         case 2:
-            return GetRenderWindowPatient();
+            return GetRenderWindowSagittal();
         case 3:
+            return GetRenderWindowPatient();
+        case 4:
             return GetRenderWindow3D();
+        case 5:
+            return GetRenderWindowCoronal();
         default:
             MITK_ERROR << "Requested unknown render window";
             break;
@@ -544,14 +569,26 @@ void AmosWidget::SetDecorationColor(unsigned int widgetNumber, mitk::Color color
       m_PlaneNodeBC->SetColor(color);
     }
     break;
-  case 2:
+  case 3:
     if(m_PlaneNodePatient.IsNotNull())
     {
       m_PlaneNodePatient->SetColor(color);
     }
     break;    
-  case 3:
+  case 4:
     m_DecorationColorWidget4 = color;
+    break;
+  case 2:
+    if (m_PlaneNodeCoronal.IsNotNull())
+    {
+        m_PlaneNodeCoronal->SetColor(color);
+    }
+    break;
+  case 5:
+    if (m_PlaneNodeSagittal.IsNotNull())
+    {
+        m_PlaneNodeSagittal->SetColor(color);
+    }
     break;
   default:
     MITK_ERROR << "Decoration color for unknown widget!";
@@ -594,7 +631,7 @@ mitk::Color AmosWidget::GetDecorationColor(unsigned int widgetNumber)
     float green[3] = { 0.0f, 0.69f, 0.0f};//This is #00B000 in hex
     return mitk::Color(green);
   }
-  case 2:
+  case 3:
   {
 //     return m_DecorationColorWidget3;
     if(m_PlaneNodePatient.IsNotNull())
@@ -608,9 +645,36 @@ mitk::Color AmosWidget::GetDecorationColor(unsigned int widgetNumber)
     float blue[3] = { 0.0f, 0.502f, 1.0f};//This is #0080FF in hex
     return mitk::Color(blue);      
   }
-  case 3:
+  case 4:
   {
     return m_DecorationColorWidget4;
+  }
+  // JCAM
+  case 5:
+  {
+   if(m_PlaneNodeCoronal.IsNotNull())
+    {
+      if(m_PlaneNodeCoronal->GetColor(tmp))
+      {
+        return dynamic_cast<mitk::ColorProperty*>(
+              m_PlaneNodeCoronal->GetProperty("color"))->GetColor();
+      }
+    }
+    float yellow[3] = { 1.0f, 1.0f, 0.0f};
+    return mitk::Color(yellow);
+  }
+  case 2:
+  {
+   if(m_PlaneNodeSagittal.IsNotNull())
+    {
+      if(m_PlaneNodeSagittal->GetColor(tmp))
+      {
+        return dynamic_cast<mitk::ColorProperty*>(
+              m_PlaneNodeSagittal->GetProperty("color"))->GetColor();
+      }
+    }
+    float purple[3] = { 0.66f, 0.06f, 0.96f };
+    return mitk::Color(purple);
   }
   default:
     MITK_ERROR << "Decoration color for unknown widget!";
@@ -881,6 +945,14 @@ void AmosWidget::SetWidgetPlanesVisibility(bool visible, mitk::BaseRenderer *ren
     {
         m_PlaneNodePatient->SetVisibility(visible, renderer);
     }
+    if (m_PlaneNodeCoronal.IsNotNull())
+    {
+        m_PlaneNodeCoronal->SetVisibility(visible, renderer);
+    }
+    if (m_PlaneNodeSagittal.IsNotNull())
+    {
+        m_PlaneNodeSagittal->SetVisibility(visible, renderer);
+    }
     //   m_RenderingManager->RequestUpdateAll();
     mitk::RenderingManager::GetInstance()->RequestUpdateAll();
 }
@@ -906,7 +978,8 @@ void AmosWidget::RemovePlanesFromDataStorage()
         return;
     }
     
-    if (m_PlaneNodeAC.IsNotNull() && m_PlaneNodeBC.IsNotNull() && m_PlaneNodePatient.IsNotNull() && m_ParentNodeForGeometryPlanes.IsNotNull()) {
+    if (m_PlaneNodeAC.IsNotNull() && m_PlaneNodeBC.IsNotNull() && m_PlaneNodePatient.IsNotNull() && m_ParentNodeForGeometryPlanes.IsNotNull()) 
+    {
         dataStorage->Remove(m_PlaneNodeAC);
         dataStorage->Remove(m_PlaneNodeBC);
         dataStorage->Remove(m_PlaneNodePatient);
@@ -920,12 +993,17 @@ void AmosWidget::RemovePlanesFromDataStorage()
         dsBC->Remove(m_ParentNodeForGeometryPlanes);// Comprobe
     }*/    
     }
+    if (m_PlaneNodeCoronal.IsNotNull() && m_PlaneNodeSagittal.IsNotNull())
+    {
+        dataStorage->Remove(m_PlaneNodeCoronal);
+        dataStorage->Remove(m_PlaneNodeSagittal);
+    }
 }
 
 void AmosWidget::SetLayoutImpl()
 {
     CreateRenderWindowWidgets();
-    GetMultiWidgetLayoutManager()->SetLayoutDesign(QmitkMultiWidgetLayoutManager::LayoutDesign::DEFAULT);
+    GetMultiWidgetLayoutManager()->SetLayoutDesign(QmitkMultiWidgetLayoutManager::LayoutDesign::SAGITTAL_UP_CORONAL_DOWN_LAYOUT);
     
     // Initialize views as axial, sagittal, coronal to all data objects in DataStorage
     auto geo = GetDataStorage()->ComputeBoundingGeometry3D(GetDataStorage()->GetAll());
@@ -934,54 +1012,82 @@ void AmosWidget::SetLayoutImpl()
 
 void AmosWidget::CreateRenderWindowWidgets()
 {
-    // create axial render window (widget)
+    // create axial AC render window (widget)
     using RenderWindowWidgetPointer = std::shared_ptr<MyQmitkRenderWindowWidget>;
     QString renderWindowWidgetName = GetNameFromIndex(0, 0);
     RenderWindowWidgetPointer renderWindowWidget1 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
     auto renderWindow1 = renderWindowWidget1->GetRenderWindow();   
     renderWindow1->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Axial);
-    renderWindowWidget1->SetDecorationColor(GetDecorationColor(0));
+    renderWindowWidget1->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_AC));
     renderWindowWidget1->SetCornerAnnotationText("Axial AC");
     renderWindowWidget1->GetRenderWindow()->SetLayoutIndex(ViewDirection::AXIAL);
     AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget1));
     
-    // create sagittal render window (widget)
+    // create axial BC render window (widget)
     renderWindowWidgetName = GetNameFromIndex(0, 1);
     RenderWindowWidgetPointer renderWindowWidget2 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
     auto renderWindow2 = renderWindowWidget2->GetRenderWindow();
     renderWindow2->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Axial); //Sagittal
-    renderWindowWidget2->SetDecorationColor(GetDecorationColor(1));
+    renderWindowWidget2->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_BC));
     renderWindowWidget2->setStyleSheet("border: 0px");
     renderWindowWidget2->SetCornerAnnotationText("Axial BC");
     renderWindowWidget2->GetRenderWindow()->SetLayoutIndex(ViewDirection::AXIAL); // SAGITAL
     AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget2));
+    
+    //  JCAM
+    // create Sagittal render window (widget)
+    renderWindowWidgetName = GetNameFromIndex(0, 2);
+    RenderWindowWidgetPointer renderWindowWidget5 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
+    auto renderWindow5 = renderWindowWidget5->GetRenderWindow();   
+    renderWindow5->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Sagittal);
+    renderWindowWidget5->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_SAGITTAL));
+    renderWindowWidget5->SetCornerAnnotationText("Sagittal");
+    renderWindowWidget5->GetRenderWindow()->SetLayoutIndex(ViewDirection::SAGITTAL);
+    AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget5));
     
     // create coronal render window (widget)
     renderWindowWidgetName = GetNameFromIndex(1, 0);
     RenderWindowWidgetPointer renderWindowWidget3 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
     auto renderWindow3 = renderWindowWidget3->GetRenderWindow();
     renderWindow3->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Axial); //Frontal
-    renderWindowWidget3->SetDecorationColor(GetDecorationColor(2));
+    renderWindowWidget3->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_PATIENT));
     renderWindowWidget3->SetCornerAnnotationText("Axial Patient");
     renderWindowWidget3->GetRenderWindow()->SetLayoutIndex(ViewDirection::AXIAL);
     AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget3));
+    
     
     // create 3D render window (widget)
     renderWindowWidgetName = GetNameFromIndex(1, 1);
     RenderWindowWidgetPointer renderWindowWidget4 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
     auto renderWindow4 = renderWindowWidget4->GetRenderWindow();
     renderWindow4->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Original);
-    renderWindowWidget4->SetDecorationColor(GetDecorationColor(3));
+    renderWindowWidget4->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_3D));
     renderWindowWidget4->SetCornerAnnotationText("3D Axial");
     renderWindowWidget4->GetRenderWindow()->SetLayoutIndex(ViewDirection::THREE_D);
-    // MITK 2021
+    
+     // MITK 2021
 //     mitk::BaseRenderer::GetInstance(renderWindowWidget4->GetRenderWindow()->GetRenderWindow())->SetMapperID(mitk::BaseRenderer::Standard3D);
     mitk::BaseRenderer::GetInstance(renderWindowWidget4->GetRenderWindow()->renderWindow())->SetMapperID(mitk::BaseRenderer::Standard3D);
     AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget4));
+       
+    // JCAM
+    // create Coronal render window (widget)
+    renderWindowWidgetName = GetNameFromIndex(1, 2);
+    RenderWindowWidgetPointer renderWindowWidget6 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
+    auto renderWindow6 = renderWindowWidget6->GetRenderWindow();
+    renderWindow6->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Frontal); 
+    //Sagittal
+    renderWindowWidget6->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_CORONAL));
+    renderWindowWidget6->setStyleSheet("border: 0px");
+    renderWindowWidget6->SetCornerAnnotationText("Coronal");
+    renderWindowWidget6->GetRenderWindow()->SetLayoutIndex(ViewDirection::CORONAL);
+    AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget6));
+    /// 
     
-    SetActiveRenderWindowWidget(renderWindowWidget1);
     
-    // connect to the "time navigation controller": send time via sliceNavigationControllers
+     SetActiveRenderWindowWidget(renderWindowWidget1);
+
+     // connect to the "time navigation controller": send time via sliceNavigationControllers
 //     m_TimeNavigationController->ConnectGeometryTimeEvent(renderWindow1->GetSliceNavigationController(), false);
 //     m_TimeNavigationController->ConnectGeometryTimeEvent(renderWindow2->GetSliceNavigationController(), false);
 //     m_TimeNavigationController->ConnectGeometryTimeEvent(renderWindow3->GetSliceNavigationController(), false);
@@ -1052,11 +1158,11 @@ void AmosWidget::AddPlanesToDataStorage()
     }*/    
     }  
     // JCAM
-    if (m_Plane2AxialSegments.IsNotNull() && m_Plane2SagitalSegments.IsNotNull() && m_ParentNodeForGeometryPlanes.IsNotNull())
-    {
-        dataStorage->Add(m_Plane2AxialSegments, m_ParentNodeForGeometryPlanes);
-        dataStorage->Add(m_Plane2SagitalSegments, m_ParentNodeForGeometryPlanes);
-    }
+     if (m_PlaneNodeCoronal.IsNotNull() && m_PlaneNodeSagittal.IsNotNull() && m_ParentNodeForGeometryPlanes.IsNotNull())
+     {
+         dataStorage->Add(m_PlaneNodeCoronal, m_ParentNodeForGeometryPlanes);
+         dataStorage->Add(m_PlaneNodeSagittal, m_ParentNodeForGeometryPlanes);
+     }
 }
 
 void AmosWidget::Fit()
@@ -1171,23 +1277,23 @@ void AmosWidget::AddDisplayPlaneSubTree()
     m_PlaneNodePatient->SetProperty("visible", mitk::BoolProperty::New(false), renderer4);
     
     // JCAM
-    mitk::BaseRenderer* renderer5 = mitk::BaseRenderer::GetInstance(GetRenderWindow2AxialWithSegment()->renderWindow());
-    m_Plane2AxialSegments = renderer5->GetCurrentWorldPlaneGeometryNode();
-    m_Plane2AxialSegments->SetProperty("visible", mitk::BoolProperty::New(true), renderer5);
-    m_Plane2AxialSegments->SetProperty("name", mitk::StringProperty::New(std::string(renderer5->GetName()) + ".plane"));
-    m_Plane2AxialSegments->SetProperty("includeInBoundingBox", mitk::BoolProperty::New(false));
-    m_Plane2AxialSegments->SetProperty("helper object", mitk::BoolProperty::New(true));
-    mapper = mitk::PlaneGeometryDataMapper2D::New();
-    m_Plane2AxialSegments->SetMapper(mitk::BaseRenderer::Standard2D, mapper);
+     mitk::BaseRenderer* renderer5 = mitk::BaseRenderer::GetInstance(GetRenderWindowCoronal()->renderWindow());
+     m_PlaneNodeCoronal = renderer5->GetCurrentWorldPlaneGeometryNode();
+     m_PlaneNodeCoronal->SetProperty("visible", mitk::BoolProperty::New(true), renderer5);
+     m_PlaneNodeCoronal->SetProperty("name", mitk::StringProperty::New(std::string(renderer5->GetName()) + ".plane"));
+     m_PlaneNodeCoronal->SetProperty("includeInBoundingBox", mitk::BoolProperty::New(false));
+     m_PlaneNodeCoronal->SetProperty("helper object", mitk::BoolProperty::New(true));
+     mapper = mitk::PlaneGeometryDataMapper2D::New();
+    m_PlaneNodeCoronal->SetMapper(mitk::BaseRenderer::Standard2D, mapper);
     // JCAM
-    mitk::BaseRenderer* renderer6 = mitk::BaseRenderer::GetInstance(GetRenderWindow2SagitalWithSegment()->renderWindow());
-    m_Plane2SagitalSegments = renderer6->GetCurrentWorldPlaneGeometryNode();
-    m_Plane2SagitalSegments->SetProperty("visible", mitk::BoolProperty::New(true), renderer6);
-    m_Plane2SagitalSegments->SetProperty("name", mitk::StringProperty::New(std::string(renderer6->GetName()) + ".plane"));
-    m_Plane2SagitalSegments->SetProperty("includeInBoundingBox", mitk::BoolProperty::New(false));
-    m_Plane2SagitalSegments->SetProperty("helper object", mitk::BoolProperty::New(true));
-    mapper = mitk::PlaneGeometryDataMapper2D::New();
-    m_Plane2SagitalSegments->SetMapper(mitk::BaseRenderer::Standard2D, mapper);
+     mitk::BaseRenderer* renderer6 = mitk::BaseRenderer::GetInstance(GetRenderWindowSagittal()->renderWindow());
+     m_PlaneNodeSagittal = renderer6->GetCurrentWorldPlaneGeometryNode();
+     m_PlaneNodeSagittal->SetProperty("visible", mitk::BoolProperty::New(true), renderer6);
+     m_PlaneNodeSagittal->SetProperty("name", mitk::StringProperty::New(std::string(renderer6->GetName()) + ".plane"));
+     m_PlaneNodeSagittal->SetProperty("includeInBoundingBox", mitk::BoolProperty::New(false));
+     m_PlaneNodeSagittal->SetProperty("helper object", mitk::BoolProperty::New(true));
+     mapper = mitk::PlaneGeometryDataMapper2D::New();
+     m_PlaneNodeSagittal->SetMapper(mitk::BaseRenderer::Standard2D, mapper);
 }
 
 // void AmosWidget::EnableStandardLevelWindow()
@@ -1501,14 +1607,14 @@ MyQmitkRenderWindow* AmosWidget::GetRenderWindow3D() const
 }
 
 // JCAM.
-MyQmitkRenderWindow * AmosWidget::GetRenderWindow2AxialWithSegment() const
-{
-    return dynamic_cast<MyQmitkRenderWindow*>(QmitkAbstractMultiWidget::GetRenderWindow(GetNameFromIndex(0, 2)));
-}
-
-MyQmitkRenderWindow * AmosWidget::GetRenderWindow2SagitalWithSegment() const
+MyQmitkRenderWindow * AmosWidget::GetRenderWindowCoronal() const
 {
     return dynamic_cast<MyQmitkRenderWindow*>(QmitkAbstractMultiWidget::GetRenderWindow(GetNameFromIndex(1, 2)));
+}
+
+MyQmitkRenderWindow * AmosWidget::GetRenderWindowSagittal() const
+{
+    return dynamic_cast<MyQmitkRenderWindow*>(QmitkAbstractMultiWidget::GetRenderWindow(GetNameFromIndex(0, 2)));
 }
 
 // bool AmosWidget::IsColoredRectanglesEnabled() const
@@ -2516,15 +2622,15 @@ mitk::DataNode::Pointer AmosWidget::GetWidgetPlanePatient()
 
 
 // JCAM
-mitk::DataNode::Pointer AmosWidget::GetWidgetPlane2AxialWithSegment()
+mitk::DataNode::Pointer AmosWidget::GetWidgetPlaneCoronal()
 {
-    return this->m_Plane2AxialSegments;
+    return this->m_PlaneNodeCoronal;
 }
   
   // JCAM
-mitk::DataNode::Pointer AmosWidget::GetWidgetPlane2SagitalWithSegment()
+mitk::DataNode::Pointer AmosWidget::GetWidgetPlaneSagittal()
 {
-    return this->m_Plane2SagitalSegments;
+    return this->m_PlaneNodeSagittal;
 }
 
     

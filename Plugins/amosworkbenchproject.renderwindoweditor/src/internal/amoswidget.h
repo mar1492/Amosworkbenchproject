@@ -84,8 +84,8 @@ public:
     /**
      * @brief JCAM. Render 2Axial and 2Satigal with segments
      **/
-    MyQmitkRenderWindow* GetRenderWindow2AxialWithSegment() const;
-    MyQmitkRenderWindow* GetRenderWindow2SagitalWithSegment() const;
+    MyQmitkRenderWindow* GetRenderWindowCoronal() const;
+    MyQmitkRenderWindow* GetRenderWindowSagittal() const;
     
 //     QmitkRenderWindow* GetRenderWindowAC() const;
 //     QmitkRenderWindow* GetRenderWindowBC() const;
@@ -106,8 +106,8 @@ public:
     /** 
      * @brief Get panels for Axial and Sagital with segments
      */
-    mitk::DataNode::Pointer GetWidgetPlane2AxialWithSegment();
-    mitk::DataNode::Pointer GetWidgetPlane2SagitalWithSegment();
+    mitk::DataNode::Pointer GetWidgetPlaneCoronal();
+    mitk::DataNode::Pointer GetWidgetPlaneSagittal();
     
 //     std::pair<mitk::Color, mitk::Color> GetGradientColors(unsigned int widgetNumber);
     
@@ -280,8 +280,8 @@ protected:
     /**
      * @brief JCAM. New planes
      */
-    mitk::DataNode::Pointer m_Plane2AxialSegments;
-    mitk::DataNode::Pointer m_Plane2SagitalSegments;
+    mitk::DataNode::Pointer m_PlaneNodeCoronal;
+    mitk::DataNode::Pointer m_PlaneNodeSagittal;
 
     /**
     * @brief m_ParentNodeForGeometryPlanes This helper object is added to the datastorage

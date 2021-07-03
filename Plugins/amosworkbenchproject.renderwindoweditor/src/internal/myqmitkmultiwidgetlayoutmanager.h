@@ -32,6 +32,10 @@ public:
     void SetLeftACandRightBC();
     void SetACUpandBCDown();
     
+    /// JCAM
+    void SetSagittalUpCoronalDownLayout();
+    //
+    
 protected:
     AmosWidget* amosWidget;
 

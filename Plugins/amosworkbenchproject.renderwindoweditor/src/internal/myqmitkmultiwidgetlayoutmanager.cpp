@@ -17,7 +17,55 @@ void MyQmitkMultiWidgetLayoutManager::SetLayoutDesign(QmitkMultiWidgetLayoutMana
         SetLeftACandRightBC();
     else if(layoutDesign == LayoutDesign::AC_UP_AND_BC_DOWN)
         SetACUpandBCDown();
-        
+    /// JCAM
+    else if (layoutDesign == LayoutDesign::SAGITTAL_UP_CORONAL_DOWN_LAYOUT)
+        SetSagittalUpCoronalDownLayout();
+    //
+}
+
+void MyQmitkMultiWidgetLayoutManager::SetSagittalUpCoronalDownLayout()
+{
+  MITK_INFO << "Set Sagittal Up, Coronal Down layout" << std::endl;
+
+    //Hide all Menu Widgets
+    m_MultiWidget->ActivateMenuWidget(false);
+
+    delete m_MultiWidget->layout();
+
+    auto hBoxLayout = new QHBoxLayout(m_MultiWidget);
+    hBoxLayout->setContentsMargins(0, 0, 0, 0);
+    m_MultiWidget->setLayout(hBoxLayout);
+    hBoxLayout->setMargin(0);
+
+    auto mainSplit = new QSplitter(Qt::Vertical, m_MultiWidget);
+    hBoxLayout->addWidget(mainSplit);
+
+    QList<int> splitterSizeRow;
+    for (int row = 0; row < m_MultiWidget->GetRowCount(); ++row)
+    {
+        splitterSizeRow.push_back(1000);
+
+        QList<int> splitterSizeColumn;
+        auto splitter = new QSplitter(mainSplit);
+        for (int column = 0; column < m_MultiWidget->GetColumnCount(); ++column)
+        {
+            splitterSizeColumn.push_back(1000);
+            auto renderWindowWidget = m_MultiWidget->GetRenderWindowWidget(row, column);
+            splitter->addWidget(renderWindowWidget.get());
+            renderWindowWidget->show();
+        }
+        splitter->setSizes(splitterSizeColumn);
+    }
+
+    mainSplit->setSizes(splitterSizeRow);
+
+    m_MultiWidget->ActivateMenuWidget(true);
+
+    auto allRenderWindows = m_MultiWidget->GetRenderWindows();
+    for (auto& renderWindow : allRenderWindows)
+    {
+        renderWindow->UpdateLayoutDesignList(LayoutDesign::SAGITTAL_UP_CORONAL_DOWN_LAYOUT);
+    }
 }
 
 void MyQmitkMultiWidgetLayoutManager::SetLeftACandRightBC()
