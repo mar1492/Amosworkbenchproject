@@ -437,6 +437,16 @@ QmitkRenderWindow* AmosWidget::GetRenderWindow(const QString& widgetName) const
         return GetRenderWindow3D();
     }
     
+    if ("sagittal" == widgetName)
+    {
+        return GetRenderWindowSagittal();
+    }
+    
+    if ("coronal" == widgetName)
+    {
+        return GetRenderWindowCoronal();
+    }
+    
     return QmitkAbstractMultiWidget::GetRenderWindow(widgetName);
 }
 
@@ -475,6 +485,9 @@ void AmosWidget::SetSelectedPosition(const mitk::Point3D& newPosition, const QSt
     GetRenderWindowBC()->GetSliceNavigationController()->SelectSliceByPoint(newPosition);
     GetRenderWindowPatient()->GetSliceNavigationController()->SelectSliceByPoint(newPosition);
     
+    // JCAM
+    GetRenderWindowSagittal()->GetSliceNavigationController()->SelectSliceByPoint(newPosition);
+    GetRenderWindowCoronal()->GetSliceNavigationController()->SelectSliceByPoint(newPosition);
     RequestUpdateAll();
 }
 
@@ -605,7 +618,7 @@ mitk::Color AmosWidget::GetDecorationColor(unsigned int widgetNumber)
   //Feel free to change your preferences in the workbench.
   float tmp[3] = {0.0f,0.0f,0.0f};
   switch (widgetNumber) {
-  case 0:
+  case WINDOW_WIDGET_AXIAL_AC:
   {
     if(m_PlaneNodeAC.IsNotNull())
     {
@@ -618,7 +631,7 @@ mitk::Color AmosWidget::GetDecorationColor(unsigned int widgetNumber)
     float red[3] = { 0.753f, 0.0f, 0.0f};//This is #C00000 in hex
     return mitk::Color(red);
   }
-  case 1:
+  case WINDOW_WIDGET_AXIAL_BC:
   {
     if(m_PlaneNodeBC.IsNotNull())
     {
@@ -631,7 +644,7 @@ mitk::Color AmosWidget::GetDecorationColor(unsigned int widgetNumber)
     float green[3] = { 0.0f, 0.69f, 0.0f};//This is #00B000 in hex
     return mitk::Color(green);
   }
-  case 3:
+  case WINDOW_WIDGET_AXIAL_PATIENT:
   {
 //     return m_DecorationColorWidget3;
     if(m_PlaneNodePatient.IsNotNull())
@@ -645,12 +658,12 @@ mitk::Color AmosWidget::GetDecorationColor(unsigned int widgetNumber)
     float blue[3] = { 0.0f, 0.502f, 1.0f};//This is #0080FF in hex
     return mitk::Color(blue);      
   }
-  case 4:
+  case WINDOW_WIDGET_AXIAL_3D:
   {
     return m_DecorationColorWidget4;
   }
   // JCAM
-  case 5:
+  case WINDOW_WIDGET_CORONAL:
   {
    if(m_PlaneNodeCoronal.IsNotNull())
     {
@@ -663,7 +676,7 @@ mitk::Color AmosWidget::GetDecorationColor(unsigned int widgetNumber)
     float yellow[3] = { 1.0f, 1.0f, 0.0f};
     return mitk::Color(yellow);
   }
-  case 2:
+  case WINDOW_WIDGET_SAGITTAL:
   {
    if(m_PlaneNodeSagittal.IsNotNull())
     {
@@ -1130,10 +1143,10 @@ void AmosWidget::CreateRenderWindowWidgets()
     connect(renderWindow4, &QmitkRenderWindow::LayoutDesignChanged, layoutManager, &QmitkMultiWidgetLayoutManager::SetLayoutDesign);
     
     renderWindow1->GetSliceNavigationController()->ConnectGeometrySliceEvent(renderWindow2->GetSliceNavigationController(), false);
-    renderWindow1->GetSliceNavigationController()->ConnectGeometrySliceEvent(renderWindow3->GetSliceNavigationController(), false);    
+    renderWindow1->GetSliceNavigationController()->ConnectGeometrySliceEvent(renderWindow4->GetSliceNavigationController(), false);    
 //     renderWindowAC->GetSliceNavigationController()->ConnectGeometrySliceEvent(renderWindow3D->GetSliceNavigationController(), false);
     renderWindow2->GetSliceNavigationController()->ConnectGeometrySliceEvent(renderWindow1->GetSliceNavigationController(), false);
-    renderWindow3->GetSliceNavigationController()->ConnectGeometrySliceEvent(renderWindow1->GetSliceNavigationController(), false);    
+    renderWindow4->GetSliceNavigationController()->ConnectGeometrySliceEvent(renderWindow1->GetSliceNavigationController(), false);    
 }
 
 void AmosWidget::AddPlanesToDataStorage()
@@ -1160,8 +1173,8 @@ void AmosWidget::AddPlanesToDataStorage()
     // JCAM
      if (m_PlaneNodeCoronal.IsNotNull() && m_PlaneNodeSagittal.IsNotNull() && m_ParentNodeForGeometryPlanes.IsNotNull())
      {
-         dataStorage->Add(m_PlaneNodeCoronal, m_ParentNodeForGeometryPlanes);
          dataStorage->Add(m_PlaneNodeSagittal, m_ParentNodeForGeometryPlanes);
+         dataStorage->Add(m_PlaneNodeCoronal, m_ParentNodeForGeometryPlanes);
      }
 }
 
