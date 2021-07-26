@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QSplitter>
 #include <QmitkRenderWindowWidget.h>
+#include <QMessageBox>
 #include "amoswidget.h"
 
 MyQmitkMultiWidgetLayoutManager::MyQmitkMultiWidgetLayoutManager(QmitkAbstractMultiWidget* multiwidget) : QmitkMultiWidgetLayoutManager(multiwidget)
@@ -13,13 +14,19 @@ MyQmitkMultiWidgetLayoutManager::MyQmitkMultiWidgetLayoutManager(QmitkAbstractMu
 void MyQmitkMultiWidgetLayoutManager::SetLayoutDesign(QmitkMultiWidgetLayoutManager::LayoutDesign layoutDesign)
 {
     QmitkMultiWidgetLayoutManager::SetLayoutDesign(layoutDesign);
+
     if(layoutDesign == LayoutDesign::LEFT_AC_AND_RIGHT_BC)
         SetLeftACandRightBC();
     else if(layoutDesign == LayoutDesign::AC_UP_AND_BC_DOWN)
         SetACUpandBCDown();
     /// JCAM
-    else if (layoutDesign == LayoutDesign::SAGITTAL_UP_CORONAL_DOWN_LAYOUT)
+    else if (layoutDesign == LayoutDesign::SAGITTAL_UP_CORONAL_DOWN)
         SetSagittalUpCoronalDownLayout();
+    else if (layoutDesign == LayoutDesign::AXIAL_UP_CORONAL_DOWN)
+        QMessageBox::information(NULL,"SetLayoutDesign","AXIAL_UP_CORONAL_DOWN: To do");
+    else if (layoutDesign == LayoutDesign::AXIAL_UP_SAGITTAL_DOWN)
+        QMessageBox::information(NULL,"SetLayoutDesign","AXIAL_UP_SAGITTAL_DOWN: To do");
+    // else
     //
 }
 
@@ -64,7 +71,7 @@ void MyQmitkMultiWidgetLayoutManager::SetSagittalUpCoronalDownLayout()
     auto allRenderWindows = m_MultiWidget->GetRenderWindows();
     for (auto& renderWindow : allRenderWindows)
     {
-        renderWindow->UpdateLayoutDesignList(LayoutDesign::SAGITTAL_UP_CORONAL_DOWN_LAYOUT);
+        renderWindow->UpdateLayoutDesignList(LayoutDesign::SAGITTAL_UP_CORONAL_DOWN);
     }
 }
 

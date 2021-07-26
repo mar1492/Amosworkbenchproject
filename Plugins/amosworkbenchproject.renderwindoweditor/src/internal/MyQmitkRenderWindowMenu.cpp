@@ -144,6 +144,11 @@ void MyQmitkRenderWindowMenu::UpdateLayoutDesignList(LayoutDesign layoutDesign)
     m_LeftACandRightBCLayoutAction->setEnabled(true);
     m_UpACandDownBCLayoutAction->setEnabled(true);   
     
+    
+    m_2AxialsWithSegmentLayoutAction->setEnabled(true);
+    m_2CoronalsWithSegmentLayoutAction->setEnabled(true);
+    m_2SagittalsWithSegmentLayoutAction->setEnabled(true);
+    
     switch (m_LayoutDesign)
     {
         case LayoutDesign::DEFAULT:
@@ -216,8 +221,19 @@ void MyQmitkRenderWindowMenu::UpdateLayoutDesignList(LayoutDesign layoutDesign)
             break;
         }  
         // JCAM
-        case LayoutDesign::SAGITTAL_UP_CORONAL_DOWN_LAYOUT:
+        case LayoutDesign::SAGITTAL_UP_CORONAL_DOWN:
         {
+            m_2SagittalsWithSegmentLayoutAction->setEnabled(false);
+            break;
+        }
+        case LayoutDesign::AXIAL_UP_SAGITTAL_DOWN:
+        {
+            m_2AxialsWithSegmentLayoutAction->setEnabled(false);
+            break;
+        }
+        case LayoutDesign::AXIAL_UP_CORONAL_DOWN:
+        {
+            m_2CoronalsWithSegmentLayoutAction->setEnabled(false);
             break;
         }
         // JCAM
@@ -435,8 +451,8 @@ void MyQmitkRenderWindowMenu::CreateSettingsWidget()
     m_2AxialsWithSegmentLayoutAction->setDisabled( false );    
     
     /* JCAM. Create 2 Sagitals with segments menu option */
-    m_2SagitalsWithSegmentLayoutAction = new QAction( "2 Sagitals with segments", m_LayoutActionsMenu );
-    m_2SagitalsWithSegmentLayoutAction->setDisabled( false );    
+    m_2SagittalsWithSegmentLayoutAction = new QAction( "2 Sagitals with segments", m_LayoutActionsMenu );
+    m_2SagittalsWithSegmentLayoutAction->setDisabled( false );    
     
     /* JCAM. Create 2 Coranals with segments menu option */
     m_2CoronalsWithSegmentLayoutAction = new QAction( "2 Coronals with segments", m_LayoutActionsMenu );
@@ -454,17 +470,13 @@ void MyQmitkRenderWindowMenu::CreateSettingsWidget()
     m_LayoutActionsMenu->addAction(m_AllVerticalLayoutAction);
     m_LayoutActionsMenu->addAction(m_RemoveOneLayoutAction);
     
-    m_LayoutActionsMenu->addAction(m_2AxialsWithSegmentLayoutAction);
-    m_LayoutActionsMenu->addAction(m_2SagitalsWithSegmentLayoutAction);
-    m_LayoutActionsMenu->addAction(m_2CoronalsWithSegmentLayoutAction);
-    
     m_LayoutActionsMenu->addAction(m_LeftACandRightBCLayoutAction);
     m_LayoutActionsMenu->addAction(m_UpACandDownBCLayoutAction);  
     
     /* JCAM. Add new menu options */
     m_LayoutActionsMenu->addAction(m_2AxialsWithSegmentLayoutAction);  
     m_LayoutActionsMenu->addAction(m_2CoronalsWithSegmentLayoutAction);  
-    m_LayoutActionsMenu->addAction(m_2SagitalsWithSegmentLayoutAction);  
+    m_LayoutActionsMenu->addAction(m_2SagittalsWithSegmentLayoutAction);  
     
     
     m_LayoutActionsMenu->setVisible(false);
@@ -483,6 +495,11 @@ void MyQmitkRenderWindowMenu::CreateSettingsWidget()
     
     connect(m_LeftACandRightBCLayoutAction, &QAction::triggered, [this]() { this->OnSetLayout(LayoutDesign::LEFT_AC_AND_RIGHT_BC); });
     connect(m_UpACandDownBCLayoutAction, &QAction::triggered, [this]() { this->OnSetLayout(LayoutDesign::AC_UP_AND_BC_DOWN); });
+    
+    /// JCAM
+    connect(m_2AxialsWithSegmentLayoutAction, &QAction::triggered, [this]() { this->OnSetLayout(LayoutDesign::SAGITTAL_UP_CORONAL_DOWN); });
+    connect(m_2CoronalsWithSegmentLayoutAction, &QAction::triggered, [this]() { this->OnSetLayout(LayoutDesign::AXIAL_UP_CORONAL_DOWN); });
+    connect(m_2SagittalsWithSegmentLayoutAction, &QAction::triggered, [this]() { this->OnSetLayout(LayoutDesign::AXIAL_UP_SAGITTAL_DOWN); });
 }
 
 void MyQmitkRenderWindowMenu::ChangeFullScreenIcon()

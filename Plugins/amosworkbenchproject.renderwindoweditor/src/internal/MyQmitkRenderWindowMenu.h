@@ -364,7 +364,7 @@ protected:
     /*! JCAM. QAction for 2 axials with segments */
     QAction* m_2AxialsWithSegmentLayoutAction;
     /*! JCAM. QAction for 2 axials with segments */
-    QAction* m_2SagitalsWithSegmentLayoutAction;
+    QAction* m_2SagittalsWithSegmentLayoutAction;
     /*! JCAM. QAction for 2 axials with segments */
     QAction* m_2CoronalsWithSegmentLayoutAction;
     
