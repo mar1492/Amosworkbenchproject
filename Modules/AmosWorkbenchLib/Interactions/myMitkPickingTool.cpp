@@ -81,11 +81,15 @@ void mitk::MyPickingTool::OnMousePressed ( StateMachineAction*, InteractionEvent
     m_ToolManager->GetDataStorage()->Remove(m_ResultNode);
 //     if(name == "AmosMultiWidgetAC") {
     if(name == "stdmulti.widget0") {
+    /// JCAM
+    //if(name == "stdmulti.widget3") {
         dataNodeOutIndex = 0;
         dataNodeInIndex = 0;
     }
 //     else if(name == "AmosMultiWidgetBC") {    
-    else if(name == "stdmulti.widget1") {
+//    else if(name == "stdmulti.widget1") {
+    /// JCAM
+    else if(name == "stdmulti.widget3") {
         dataNodeOutIndex = 1;
         dataNodeInIndex = 1;        
     }

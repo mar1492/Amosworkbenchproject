@@ -629,7 +629,7 @@ mitk::Color AmosWidget::GetDecorationColor(unsigned int widgetNumber)
               m_PlaneNodeAC->GetProperty("color"))->GetColor();
       }
     }
-    float red[3] = { 0.753f, 0.0f, 0.0f};//This is #C00000 in hex
+    float red[3] = { 1.0f, 0.5f, 0.1f};//This is #C00000 in hex
     return mitk::Color(red);
   }
   case WINDOW_WIDGET_AXIAL_BC:
@@ -1019,7 +1019,8 @@ void AmosWidget::RemovePlanesFromDataStorage()
 void AmosWidget::SetLayoutImpl()
 {
     CreateRenderWindowWidgets();
-    GetMultiWidgetLayoutManager()->SetLayoutDesign(QmitkMultiWidgetLayoutManager::LayoutDesign::SAGITTAL_UP_CORONAL_DOWN);
+    //GetMultiWidgetLayoutManager()->SetLayoutDesign(QmitkMultiWidgetLayoutManager::LayoutDesign::TWO_AXIAL_WITH_SEGMENTATION);
+    GetMultiWidgetLayoutManager()->SetLayoutDesign(QmitkMultiWidgetLayoutManager::LayoutDesign::DEFAULT);
     
     // Initialize views as axial, sagittal, coronal to all data objects in DataStorage
     auto geo = GetDataStorage()->ComputeBoundingGeometry3D(GetDataStorage()->GetAll());
@@ -1028,16 +1029,17 @@ void AmosWidget::SetLayoutImpl()
 
 void AmosWidget::CreateRenderWindowWidgets()
 {
-    // create axial BC render window (widget)
+   // create axial AC render window (widget)
+    using RenderWindowWidgetPointer = std::shared_ptr<MyQmitkRenderWindowWidget>;
     QString renderWindowWidgetName = GetNameFromIndex(0, 0);
-    RenderWindowWidgetPointer renderWindowWidget2 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
-    auto renderWindow2 = renderWindowWidget2->GetRenderWindow();
-    renderWindow2->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Axial); //Axial BC
-    renderWindowWidget2->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_BC));
-    renderWindowWidget2->setStyleSheet("border: 0px");
-    renderWindowWidget2->SetCornerAnnotationText("Axial BC");
-    renderWindowWidget2->GetRenderWindow()->SetLayoutIndex(ViewDirection::AXIAL); // AXIAL BC
-    AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget2));
+    RenderWindowWidgetPointer renderWindowWidget1 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
+    auto renderWindow1 = renderWindowWidget1->GetRenderWindow();   
+    renderWindow1->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Axial);
+    renderWindowWidget1->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_AC));
+    renderWindowWidget1->SetCornerAnnotationText("Axial AC");
+    renderWindowWidget1->GetRenderWindow()->SetLayoutIndex(ViewDirection::AXIAL);
+    AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget1));
+    
     
     //  JCAM
     // create Sagittal render window (widget)
@@ -1061,16 +1063,16 @@ void AmosWidget::CreateRenderWindowWidgets()
     AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget3));
     
     
-    // create axial AC render window (widget)
-    using RenderWindowWidgetPointer = std::shared_ptr<MyQmitkRenderWindowWidget>;
+     // create axial BC render window (widget)
     renderWindowWidgetName = GetNameFromIndex(1, 0);
-    RenderWindowWidgetPointer renderWindowWidget1 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
-    auto renderWindow1 = renderWindowWidget1->GetRenderWindow();   
-    renderWindow1->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Axial);
-    renderWindowWidget1->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_AC));
-    renderWindowWidget1->SetCornerAnnotationText("Axial AC");
-    renderWindowWidget1->GetRenderWindow()->SetLayoutIndex(ViewDirection::AXIAL);
-    AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget1));
+    RenderWindowWidgetPointer renderWindowWidget2 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
+    auto renderWindow2 = renderWindowWidget2->GetRenderWindow();
+    renderWindow2->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Axial); //Axial BC
+    renderWindowWidget2->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_BC));
+    renderWindowWidget2->setStyleSheet("border: 0px");
+    renderWindowWidget2->SetCornerAnnotationText("Axial BC");
+    renderWindowWidget2->GetRenderWindow()->SetLayoutIndex(ViewDirection::AXIAL); // AXIAL BC
+    AddRenderWindowWidget(renderWindowWidgetName, std::dynamic_pointer_cast<QmitkRenderWindowWidget>(renderWindowWidget2));
     
     // JCAM
     // create Coronal render window (widget)

@@ -364,9 +364,9 @@ protected:
     /*! JCAM. QAction for 2 axials with segments */
     QAction* m_2AxialsWithSegmentLayoutAction;
     /*! JCAM. QAction for 2 axials with segments */
-    QAction* m_2SagittalsWithSegmentLayoutAction;
+    QAction* m_3DAxialLayoutAction;
     /*! JCAM. QAction for 2 axials with segments */
-    QAction* m_2CoronalsWithSegmentLayoutAction;
+    QAction* m_SagittalUpCoronalDownLayoutAction;
     
     //   QLabel *m_TSLabel;
     

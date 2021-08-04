@@ -486,10 +486,17 @@ void QmitkSegmentationView::OnWorkingNodeVisibilityChanged()
         mitk::BaseRenderer::GetRenderWindowByName("AmosMultiWidgetAC")));
     bool selectedBCNodeIsVisible = selectedBCNode->IsVisible(mitk::BaseRenderer::GetInstance(
         mitk::BaseRenderer::GetRenderWindowByName("AmosMultiWidgetBC"))); */  
-    bool selectedNodeIsVisible = selectedNode->IsVisible(mitk::BaseRenderer::GetInstance(
+/*
+     bool selectedNodeIsVisible = selectedNode->IsVisible(mitk::BaseRenderer::GetInstance(
         mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget0")));
     bool selectedBCNodeIsVisible = selectedBCNode->IsVisible(mitk::BaseRenderer::GetInstance(
         mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget1"))); 
+ */   
+    /// JCAM
+    bool selectedNodeIsVisible = selectedNode->IsVisible(mitk::BaseRenderer::GetInstance(
+        mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget0")));
+    bool selectedBCNodeIsVisible = selectedBCNode->IsVisible(mitk::BaseRenderer::GetInstance(
+        mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget3"))); 
     
     if (!selectedNodeIsVisible && !selectedBCNodeIsVisible)
     {

@@ -29,11 +29,15 @@ public:
      */
     virtual void SetLayoutDesign(QmitkMultiWidgetLayoutManager::LayoutDesign layoutDesign);
     
+    virtual void SetDefaultLayout();
+
     void SetLeftACandRightBC();
     void SetACUpandBCDown();
     
     /// JCAM
-    void SetSagittalUpCoronalDownLayout();
+    void TwoAxialWithSegmentationLayout();
+    void Axial3DOnlyLayout();
+    void SagittalUpCoronalDownLayout();
     //
     
 protected:
