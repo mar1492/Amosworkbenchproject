@@ -797,7 +797,7 @@ void QmitkAmosWorkbenchRenderWindowEditor::GetPreferenceDecorations(const berry:
         renderWindowWidget.second->SetDecorationColor(HexColorToMitkColor(decorationColor));
         
         auto defaultCornerAnnotation = renderWindowWidget.second->GetCornerAnnotationText();
-        auto cornerAnnotation = preferences->Get(widgetName + " corner annotation", QString::fromStdString(defaultCornerAnnotation));
+        auto cornerAnnotation = preferences->Get(widgetName + " corner annotation", QString::fromStdString("defaultCornerAnnotation"));
         renderWindowWidget.second->SetCornerAnnotationText(cornerAnnotation.toStdString());
         
         ++i;

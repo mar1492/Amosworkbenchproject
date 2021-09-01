@@ -149,12 +149,22 @@
      </item>
      <item>
       <property name="text">
-       <string>AmosMultiWidgetBC</string>
+       <string>AmosMultiWidgetSagittal</string>
       </property>
      </item>
      <item>
       <property name="text">
        <string>AmosMultiWidgetPatient</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetBC</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetCoronal</string>
       </property>
      </item>
      <item>

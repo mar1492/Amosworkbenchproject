@@ -79,20 +79,21 @@ protected:
    *
    * If two different colors are chosen, a gradient background appears.
    */
-  QString m_WidgetBackgroundColor1[4];
-  QString m_WidgetBackgroundColor2[4];
+  /// JCAM
+  QString m_WidgetBackgroundColor1[6];
+  QString m_WidgetBackgroundColor2[6];
 
   /**
    * @brief m_WidgetDecorationColor the decoration color.
    *
    * The rectangle prop, the crosshair, the 3D planes and the corner annotation use this.
    */
-  QString m_WidgetDecorationColor[4];
+  QString m_WidgetDecorationColor[6];
 
   /**
    * @brief m_Widget1Annotation the text of the corner annotation.
    */
-  QString m_WidgetAnnotation[4];
+  QString m_WidgetAnnotation[6];
   
     /**
    * @brief m_SegmentationColor the segmentation color.

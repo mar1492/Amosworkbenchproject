@@ -88,24 +88,37 @@ void QmitkAmosWidgetEditorPreferencePage::PerformCancel()
 
 bool QmitkAmosWidgetEditorPreferencePage::PerformOk()
 {
-  m_Preferences->Put("widget1 corner annotation", m_WidgetAnnotation[0]);
-  m_Preferences->Put("widget2 corner annotation", m_WidgetAnnotation[1]);
-  m_Preferences->Put("widget3 corner annotation", m_WidgetAnnotation[2]);
-  m_Preferences->Put("widget4 corner annotation", m_WidgetAnnotation[3]);
+  m_Preferences->Put("stdmulti.widget0 corner annotation", m_WidgetAnnotation[0]);
+  m_Preferences->Put("stdmulti.widget1 corner annotation", m_WidgetAnnotation[1]);
+  m_Preferences->Put("stdmulti.widget2 corner annotation", m_WidgetAnnotation[2]);
+  m_Preferences->Put("stdmulti.widget3 corner annotation", m_WidgetAnnotation[3]);
+  /// JCAM
+  m_Preferences->Put("stdmulti.widget4 corner annotation", m_WidgetAnnotation[4]);
+  m_Preferences->Put("stdmulti.widget5 corner annotation", m_WidgetAnnotation[5]);
 
-  m_Preferences->Put("widget1 decoration color", m_WidgetDecorationColor[0]);
-  m_Preferences->Put("widget2 decoration color", m_WidgetDecorationColor[1]);
-  m_Preferences->Put("widget3 decoration color", m_WidgetDecorationColor[2]);
-  m_Preferences->Put("widget4 decoration color", m_WidgetDecorationColor[3]);
+  m_Preferences->Put("stdmulti.widget0 decoration color", m_WidgetDecorationColor[0]);
+  m_Preferences->Put("stdmulti.widget1 decoration color", m_WidgetDecorationColor[1]);
+  m_Preferences->Put("stdmulti.widget2 decoration color", m_WidgetDecorationColor[2]);
+  m_Preferences->Put("stdmulti.widget3 decoration color", m_WidgetDecorationColor[3]);
+  /// JCAM
+  m_Preferences->Put("stdmulti.widget4 decoration color", m_WidgetDecorationColor[4]);
+  m_Preferences->Put("stdmulti.widget5 decoration color", m_WidgetDecorationColor[5]);
 
-  m_Preferences->Put("widget1 first background color", m_WidgetBackgroundColor1[0]);
-  m_Preferences->Put("widget2 first background color", m_WidgetBackgroundColor1[1]);
-  m_Preferences->Put("widget3 first background color", m_WidgetBackgroundColor1[2]);
-  m_Preferences->Put("widget4 first background color", m_WidgetBackgroundColor1[3]);
-  m_Preferences->Put("widget1 second background color", m_WidgetBackgroundColor2[0]);
-  m_Preferences->Put("widget2 second background color", m_WidgetBackgroundColor2[1]);
-  m_Preferences->Put("widget3 second background color", m_WidgetBackgroundColor2[2]);
-  m_Preferences->Put("widget4 second background color", m_WidgetBackgroundColor2[3]);
+  m_Preferences->Put("stdmulti.widget0 first background color", m_WidgetBackgroundColor1[0]);
+  m_Preferences->Put("stdmulti.widget1 first background color", m_WidgetBackgroundColor1[1]);
+  m_Preferences->Put("stdmulti.widget2 first background color", m_WidgetBackgroundColor1[2]);
+  m_Preferences->Put("stdmulti.widget3 first background color", m_WidgetBackgroundColor1[3]);
+  /// JCAM
+  m_Preferences->Put("stdmulti.widget4 first background color", m_WidgetBackgroundColor1[4]);
+  m_Preferences->Put("stdmulti.widget5 first background color", m_WidgetBackgroundColor1[5]);
+  
+  m_Preferences->Put("stdmulti.widget0 second background color", m_WidgetBackgroundColor2[0]);
+  m_Preferences->Put("stdmulti.widget1 second background color", m_WidgetBackgroundColor2[1]);
+  m_Preferences->Put("stdmulti.widget2 second background color", m_WidgetBackgroundColor2[2]);
+  m_Preferences->Put("stdmulti.widget3 second background color", m_WidgetBackgroundColor2[3]);
+  /// JCAM
+  m_Preferences->Put("stdmulti.widget4 second background color", m_WidgetBackgroundColor2[4]);
+  m_Preferences->Put("stdmulti.widget5 second background color", m_WidgetBackgroundColor2[5]);
   
   m_Preferences->Put("AC segmentation color", m_SegmentationColor[0]);
   m_Preferences->Put("BC segmentation color", m_SegmentationColor[1]);
@@ -127,30 +140,39 @@ void QmitkAmosWidgetEditorPreferencePage::Update()
   //QmitkAmosWorkbenchRenderWindowEditor::InitializePreferences(). Therefore,
   //all default values here are not relevant.
   //gradient background colors
-  m_WidgetBackgroundColor1[0] = m_Preferences->Get("widget1 first background color", "#000000");
-  m_WidgetBackgroundColor2[0] = m_Preferences->Get("widget1 second background color", "#000000");
-  m_WidgetBackgroundColor1[1] = m_Preferences->Get("widget2 first background color", "#000000");
-  m_WidgetBackgroundColor2[1] = m_Preferences->Get("widget2 second background color", "#000000");
-  m_WidgetBackgroundColor1[2] = m_Preferences->Get("widget3 first background color", "#000000");
-  m_WidgetBackgroundColor2[2] = m_Preferences->Get("widget3 second background color", "#000000");
-  m_WidgetBackgroundColor1[3] = m_Preferences->Get("widget4 first background color", "#191919");
-  m_WidgetBackgroundColor2[3] = m_Preferences->Get("widget4 second background color", "#7F7F7F");
-
+  m_WidgetBackgroundColor1[0] = m_Preferences->Get("stdmulti.widget0 first background color", "#000000");
+  m_WidgetBackgroundColor2[0] = m_Preferences->Get("stdmulti.widget0 second background color", "#000000");
+  m_WidgetBackgroundColor1[1] = m_Preferences->Get("stdmulti.widget1 first background color", "#000000");
+  m_WidgetBackgroundColor2[1] = m_Preferences->Get("stdmulti.widget1 second background color", "#000000");
+  m_WidgetBackgroundColor1[2] = m_Preferences->Get("stdmulti.widget2 first background color", "#000000");
+  m_WidgetBackgroundColor2[2] = m_Preferences->Get("stdmulti.widget2 second background color", "#000000");
+  m_WidgetBackgroundColor1[3] = m_Preferences->Get("stdmulti.widget3 first background color", "#191919");
+  m_WidgetBackgroundColor2[3] = m_Preferences->Get("stdmulti.widget3 second background color", "#7F7F7F");
+    /// JCAM
+  m_WidgetBackgroundColor1[4] = m_Preferences->Get("stdmulti.widget4 first background color", "#191919");
+  m_WidgetBackgroundColor2[4] = m_Preferences->Get("stdmulti.widget4 second background color", "#7F7F7F");
+  m_WidgetBackgroundColor1[5] = m_Preferences->Get("stdmulti.widget5 first background color", "#191919");
+  m_WidgetBackgroundColor2[5] = m_Preferences->Get("stdmulti.widget5 second background color", "#7F7F7F");
+  
   //decoration colors
-  m_WidgetDecorationColor[0] = m_Preferences->Get("widget1 decoration color", "#FF0000");
-  m_WidgetDecorationColor[1] = m_Preferences->Get("widget2 decoration color", "#00FF00");
-  m_WidgetDecorationColor[2] = m_Preferences->Get("widget3 decoration color", "#0000FF");
-  m_WidgetDecorationColor[3] = m_Preferences->Get("widget4 decoration color", "#FFFF00");
+  m_WidgetDecorationColor[0] = m_Preferences->Get("stdmulti.widget0 decoration color", "#FF0000");
+  m_WidgetDecorationColor[1] = m_Preferences->Get("stdmulti.widget1 decoration color", "#00FF00");
+  m_WidgetDecorationColor[2] = m_Preferences->Get("stdmulti.widget2 decoration color", "#0000FF");
+  m_WidgetDecorationColor[3] = m_Preferences->Get("stdmulti.widget3 decoration color", "#FFFF00");
+  m_WidgetDecorationColor[4] = m_Preferences->Get("stdmulti.widget4 decoration color", "#0000FF");
+  m_WidgetDecorationColor[5] = m_Preferences->Get("stdmulti.widget5 decoration color", "#FFFF00");
   
   //segmentation colors
   m_SegmentationColor[0] = m_Preferences->Get("AC segmentation color", "#FF0000");
   m_SegmentationColor[1] = m_Preferences->Get("BC segmentation color", "#00FF00");  
 
   //annotation text
-  m_WidgetAnnotation[0] = m_Preferences->Get("widget1 corner annotation", "Axial");
-  m_WidgetAnnotation[1] = m_Preferences->Get("widget2 corner annotation", "Sagittal");
-  m_WidgetAnnotation[2] = m_Preferences->Get("widget3 corner annotation", "Coronal");
-  m_WidgetAnnotation[3] = m_Preferences->Get("widget4 corner annotation", "3D");
+  m_WidgetAnnotation[0] = m_Preferences->Get("stdmulti.widget0 corner annotation", "Axial");
+  m_WidgetAnnotation[1] = m_Preferences->Get("stdmulti.widget1 corner annotation", "Sagittal");
+  m_WidgetAnnotation[2] = m_Preferences->Get("stdmulti.widget2 corner annotation", "Patient");
+  m_WidgetAnnotation[3] = m_Preferences->Get("stdmulti.widget3 corner annotation", "3D");
+  m_WidgetAnnotation[4] = m_Preferences->Get("stdmulti.widget4 corner annotation", "Coronal");
+  m_WidgetAnnotation[5] = m_Preferences->Get("stdmulti.widget5 corner annotation", "Sagittal");
 
 
   //Ui stuff
@@ -178,7 +200,8 @@ void QmitkAmosWidgetEditorPreferencePage::Update()
 void QmitkAmosWidgetEditorPreferencePage::ColorChooserButtonClicked()
 {
   unsigned int widgetIndex = m_Ui->m_RenderWindowChooser->currentIndex();
-  if(widgetIndex > 3)
+  /// JCAM
+  if(widgetIndex > 5)
   {
     MITK_ERROR << "Selected index for unknown.";
     return;
@@ -252,7 +275,8 @@ void QmitkAmosWidgetEditorPreferencePage::SetStyleSheetToColorChooserButton(QCol
 void QmitkAmosWidgetEditorPreferencePage::AnnotationTextChanged(QString text)
 {
   unsigned int widgetIndex = m_Ui->m_RenderWindowChooser->currentIndex();
-  if( widgetIndex > 3)
+  /// JCAM
+  if( widgetIndex > 5)
   {
     MITK_INFO << "Selected index for unknown widget.";
     return;
@@ -268,7 +292,8 @@ void QmitkAmosWidgetEditorPreferencePage::ResetPreferencesAndGUI()
 
 void QmitkAmosWidgetEditorPreferencePage::OnWidgetComboBoxChanged(int i)
 {
-  if( i > 3)
+    /// JCAM
+  if( i > 5)
   {
     MITK_ERROR << "Selected unknown widget.";
     return;
