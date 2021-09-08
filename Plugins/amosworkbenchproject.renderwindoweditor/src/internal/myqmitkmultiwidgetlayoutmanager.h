@@ -36,8 +36,8 @@ public:
     
     /// JCAM
     void TwoAxialWithSegmentationLayout();
-    void Axial3DOnlyLayout();
-    void SagittalUpCoronalDownLayout();
+    void TwoSagittalsWithSegments();
+    void TwoCoronalsWithSegments();
     //
     
 protected:

@@ -1607,7 +1607,7 @@ MyQmitkRenderWindow* AmosWidget::GetRenderWindowAC() const
 {
     //     return renderWindowAC;
 //     return QmitkAbstractMultiWidget::GetRenderWindow(GetNameFromIndex(0, 0));
-    return dynamic_cast<MyQmitkRenderWindow*>(QmitkAbstractMultiWidget::GetRenderWindow(GetNameFromIndex(1, 0)));
+    return dynamic_cast<MyQmitkRenderWindow*>(QmitkAbstractMultiWidget::GetRenderWindow(GetNameFromIndex(0, 0)));
 }
 
 MyQmitkRenderWindow* AmosWidget::GetRenderWindowBC() const
@@ -1615,7 +1615,7 @@ MyQmitkRenderWindow* AmosWidget::GetRenderWindowBC() const
 {
 //     return renderWindowBC;
 //     return QmitkAbstractMultiWidget::GetRenderWindow(GetNameFromIndex(0, 1));
-    return dynamic_cast<MyQmitkRenderWindow*>(QmitkAbstractMultiWidget::GetRenderWindow(GetNameFromIndex(0, 0)));
+    return dynamic_cast<MyQmitkRenderWindow*>(QmitkAbstractMultiWidget::GetRenderWindow(GetNameFromIndex(1, 0)));
 }
 
 MyQmitkRenderWindow* AmosWidget::GetRenderWindowPatient() const

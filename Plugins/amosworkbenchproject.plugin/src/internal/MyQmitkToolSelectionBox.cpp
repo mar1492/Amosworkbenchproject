@@ -299,11 +299,12 @@ void MyQmitkToolSelectionBox::SetGUIEnabledAccordingToToolManagerState()
 {
   mitk::DataNode* swapNode;
  /// JCAM
+  
   mitk::DataNode* referenceNode = m_ToolManager->GetReferenceData(0);
   mitk::DataNode* workingNode = m_ToolManager->GetWorkingData(0);
   mitk::DataNode* workingBCNode = m_ToolManager->GetWorkingData(1);
   
-    /*
+  /*  
   mitk::DataNode* referenceNode = m_ToolManager->GetReferenceData(3);
   mitk::DataNode* workingNode = m_ToolManager->GetWorkingData(3);
   mitk::DataNode* workingBCNode = m_ToolManager->GetWorkingData(0);
@@ -339,12 +340,17 @@ void MyQmitkToolSelectionBox::SetGUIEnabledAccordingToToolManagerState()
 		  && workingBCNode->IsVisible(mitk::BaseRenderer::GetInstance( mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget1")))
                   && isVisible();   
     */
-        enabled = referenceNode && workingNode && workingBCNode
-                  && referenceNode->IsVisible(mitk::BaseRenderer::GetInstance( mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget3")))
-		  && referenceNode->IsVisible(mitk::BaseRenderer::GetInstance( mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget0")))
-                  && workingNode->IsVisible(mitk::BaseRenderer::GetInstance( mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget3")))
-		  && workingBCNode->IsVisible(mitk::BaseRenderer::GetInstance( mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget0")))
-                  && isVisible();   
+        enabled = referenceNode && workingNode && workingBCNode;
+        
+        enabled = enabled && referenceNode->IsVisible(mitk::BaseRenderer::GetInstance(      mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget0")));
+        
+		enabled = enabled && referenceNode->IsVisible(mitk::BaseRenderer::GetInstance( mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget3")));
+        
+        enabled = enabled && workingNode->IsVisible(mitk::BaseRenderer::GetInstance( mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget0")));
+        
+		enabled = enabled && workingBCNode->IsVisible(mitk::BaseRenderer::GetInstance( mitk::BaseRenderer::GetRenderWindowByName("stdmulti.widget3")));
+        
+        enabled = enabled && isVisible();   
 
       break;
     case EnabledWithReferenceData:

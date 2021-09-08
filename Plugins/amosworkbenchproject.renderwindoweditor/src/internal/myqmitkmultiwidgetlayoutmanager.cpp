@@ -29,11 +29,11 @@ void MyQmitkMultiWidgetLayoutManager::SetLayoutDesign(QmitkMultiWidgetLayoutMana
             TwoAxialWithSegmentationLayout();
             break;
          case LayoutDesign::AXIAL_3D_ONLY:
-             Axial3DOnlyLayout();
+             TwoSagittalsWithSegments();
             //QMessageBox::information(NULL,"SetLayoutDesign","AXIAL_3D_ONLY: To do");
             break;
         case LayoutDesign::SAGITTAL_UP_CORONAL_DOWN:
-            SagittalUpCoronalDownLayout();
+            TwoCoronalsWithSegments();
             //QMessageBox::information(NULL,"SetLayoutDesign","AXIAL_UP_SAGITTAL_DOWN: To do");
             break;
         default:
@@ -60,7 +60,7 @@ void MyQmitkMultiWidgetLayoutManager::SetLayoutDesign(QmitkMultiWidgetLayoutMana
     ///    
 }
 
-void MyQmitkMultiWidgetLayoutManager::SagittalUpCoronalDownLayout()
+void MyQmitkMultiWidgetLayoutManager::TwoCoronalsWithSegments()
 {
   MITK_INFO << "SAGITTAL_UP_CORONAL_DOWN layout" << std::endl;
 
@@ -75,7 +75,7 @@ void MyQmitkMultiWidgetLayoutManager::SagittalUpCoronalDownLayout()
     }
 }
 
-void MyQmitkMultiWidgetLayoutManager::Axial3DOnlyLayout()
+void MyQmitkMultiWidgetLayoutManager::TwoSagittalsWithSegments()
 {
   MITK_INFO << "AXIAL_3D_ONLY layout" << std::endl;
 
