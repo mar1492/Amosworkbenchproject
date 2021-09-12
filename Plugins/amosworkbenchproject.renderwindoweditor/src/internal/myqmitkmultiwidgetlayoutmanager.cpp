@@ -17,6 +17,7 @@ void MyQmitkMultiWidgetLayoutManager::SetLayoutDesign(QmitkMultiWidgetLayoutMana
     switch (layoutDesign)
     {
         case LayoutDesign::DEFAULT:
+            //amosWidget->CreateAxialRenderWindowWidgets();
             SetDefaultLayout();
             break;
         case LayoutDesign::LEFT_AC_AND_RIGHT_BC:
@@ -28,11 +29,12 @@ void MyQmitkMultiWidgetLayoutManager::SetLayoutDesign(QmitkMultiWidgetLayoutMana
         case LayoutDesign::TWO_AXIAL_WITH_SEGMENTATION:
             TwoAxialWithSegmentationLayout();
             break;
-         case LayoutDesign::AXIAL_3D_ONLY:
-             TwoSagittalsWithSegments();
+         case LayoutDesign::TWO_SAGITTAL_WITH_SEGMENTATION:
+            //amosWidget->CreateSagittalRenderWindowWidgets();
+            TwoSagittalsWithSegments();
             //QMessageBox::information(NULL,"SetLayoutDesign","AXIAL_3D_ONLY: To do");
             break;
-        case LayoutDesign::SAGITTAL_UP_CORONAL_DOWN:
+        case LayoutDesign::TWO_CORONNAL_WITH_SEGMENTATION:
             TwoCoronalsWithSegments();
             //QMessageBox::information(NULL,"SetLayoutDesign","AXIAL_UP_SAGITTAL_DOWN: To do");
             break;
@@ -62,37 +64,7 @@ void MyQmitkMultiWidgetLayoutManager::SetLayoutDesign(QmitkMultiWidgetLayoutMana
 
 void MyQmitkMultiWidgetLayoutManager::TwoCoronalsWithSegments()
 {
-  MITK_INFO << "SAGITTAL_UP_CORONAL_DOWN layout" << std::endl;
-
-  QMessageBox::information(NULL,"SetLayoutDesign","SAGITTAL_UP_CORONAL_DOWN: To do");
-
-    m_MultiWidget->ActivateMenuWidget(true);
-
-    auto allRenderWindows = m_MultiWidget->GetRenderWindows();
-    for (auto& renderWindow : allRenderWindows)
-    {
-        renderWindow->UpdateLayoutDesignList(LayoutDesign::SAGITTAL_UP_CORONAL_DOWN);
-    }
-}
-
-void MyQmitkMultiWidgetLayoutManager::TwoSagittalsWithSegments()
-{
-  MITK_INFO << "AXIAL_3D_ONLY layout" << std::endl;
-
-  QMessageBox::information(NULL,"SetLayoutDesign","AXIAL_3D_ONLY: To do");
-
-    m_MultiWidget->ActivateMenuWidget(true);
-
-    auto allRenderWindows = m_MultiWidget->GetRenderWindows();
-    for (auto& renderWindow : allRenderWindows)
-    {
-        renderWindow->UpdateLayoutDesignList(LayoutDesign::AXIAL_3D_ONLY);
-    }    
-}
-
-void MyQmitkMultiWidgetLayoutManager::TwoAxialWithSegmentationLayout()
-{
-  MITK_INFO << "Two axial with segmentation layout" << std::endl;
+  MITK_INFO << "TWO_CORONNAL_WITH_SEGMENTATION layout. 6 windows CORONAL" << std::endl;
 
     //Hide all Menu Widgets
     m_MultiWidget->ActivateMenuWidget(false);
@@ -108,7 +80,185 @@ void MyQmitkMultiWidgetLayoutManager::TwoAxialWithSegmentationLayout()
     hBoxLayout->addWidget(mainSplit);
 
     QList<int> splitterSizeRow;
-    for (int row = 0; row < m_MultiWidget->GetRowCount(); ++row)
+    for (int row = CORONAL_ROW_0; row <= CORONAL_ROW_1 /*m_MultiWidget->GetRowCount()*/; ++row)
+    {
+        splitterSizeRow.push_back(1000);
+
+        QList<int> splitterSizeColumn;
+        auto splitter = new QSplitter(mainSplit);
+        for (int column = 0; column < m_MultiWidget->GetColumnCount(); ++column)
+        {
+            // 3D View is only created in Axial view
+            //if (row == CORONAL_ROW_1 && column == 2)
+            //    continue;
+            splitterSizeColumn.push_back(1000);
+            auto renderWindowWidget = m_MultiWidget->GetRenderWindowWidget(row, column);
+            splitter->addWidget(renderWindowWidget.get());
+            renderWindowWidget->show();
+        }
+        splitter->setSizes(splitterSizeColumn);
+    }
+
+    mainSplit->setSizes(splitterSizeRow);
+
+    m_MultiWidget->ActivateMenuWidget(true);
+
+    auto allRenderWindows = m_MultiWidget->GetRenderWindows();
+    for (auto& renderWindow : allRenderWindows)
+    {
+        renderWindow->UpdateLayoutDesignList(LayoutDesign::TWO_CORONNAL_WITH_SEGMENTATION);
+    }
+
+}
+
+void MyQmitkMultiWidgetLayoutManager::TwoSagittalsWithSegments()
+{
+  MITK_INFO << "TWO_SAGITTAL_WITH_SEGMENTATION layout. 6 windows SAGITTAL" << std::endl;
+
+    //Hide all Menu Widgets
+    m_MultiWidget->ActivateMenuWidget(false);
+
+    delete m_MultiWidget->layout();
+
+    auto hBoxLayout = new QHBoxLayout(m_MultiWidget);
+    hBoxLayout->setContentsMargins(0, 0, 0, 0);
+    m_MultiWidget->setLayout(hBoxLayout);
+    hBoxLayout->setMargin(0);
+
+    auto mainSplit = new QSplitter(Qt::Vertical, m_MultiWidget);
+    hBoxLayout->addWidget(mainSplit);
+
+    QList<int> splitterSizeRow;
+    for (int row = SAGITTAL_ROW_0; row <= SAGITTAL_ROW_1 /*m_MultiWidget->GetRowCount()*/; ++row)
+    {
+        splitterSizeRow.push_back(1000);
+
+        QList<int> splitterSizeColumn;
+        auto splitter = new QSplitter(mainSplit);
+        for (int column = 0; column < m_MultiWidget->GetColumnCount(); ++column)
+        {
+             // 3D View is only created in Axial view
+            //if (row == SAGITTAL_ROW_1 && column == 2)
+             //   continue;
+ 
+            splitterSizeColumn.push_back(1000);
+            auto renderWindowWidget = m_MultiWidget->GetRenderWindowWidget(row, column);
+            splitter->addWidget(renderWindowWidget.get());
+            renderWindowWidget->show();
+        }
+        splitter->setSizes(splitterSizeColumn);
+    }
+
+    mainSplit->setSizes(splitterSizeRow);
+
+    m_MultiWidget->ActivateMenuWidget(true);
+
+    auto allRenderWindows = m_MultiWidget->GetRenderWindows();
+    for (auto& renderWindow : allRenderWindows)
+    {
+        renderWindow->UpdateLayoutDesignList(LayoutDesign::TWO_SAGITTAL_WITH_SEGMENTATION);
+    }
+
+/*
+    //Hide all Menu Widgets
+    m_MultiWidget->ActivateMenuWidget(false);
+
+    delete m_MultiWidget->layout();
+
+    auto hBoxLayout = new QHBoxLayout(m_MultiWidget);
+    hBoxLayout->setContentsMargins(0, 0, 0, 0);
+    m_MultiWidget->setLayout(hBoxLayout);
+    hBoxLayout->setMargin(0);
+
+    auto mainSplit = new QSplitter(Qt::Vertical, m_MultiWidget);
+    hBoxLayout->addWidget(mainSplit);
+
+    QList<int> splitterSizeRow;
+    
+    splitterSizeRow.push_back(1000);
+    QList<int> splitterSizeColumn;
+    auto splitter = new QSplitter(mainSplit);
+
+    // Sagittal AC
+    splitterSizeColumn.push_back(1000);
+    auto renderWindowWidget = amosWidget->GetRenderWindowWidget(0,0);
+    renderWindowWidget->GetRenderWindow()->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Sagittal);     
+    //renderWindowWidget->GetRenderWindow()->SetLayoutIndex(QmitkMxNMultiWidget::ViewDirection::SAGITTAL);
+    splitter->addWidget(renderWindowWidget.get());   
+    renderWindowWidget->show();
+    
+    // Axial AC
+    splitterSizeColumn.push_back(1000);
+    renderWindowWidget = amosWidget->GetRenderWindowWidget(0,1);
+    renderWindowWidget->GetRenderWindow()->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Axial); 
+    //renderWindowWidget->GetRenderWindow()->SetLayoutIndex(QmitkMxNMultiWidget::ViewDirection::AXIAL);
+    splitter->addWidget(renderWindowWidget.get());   
+    renderWindowWidget->show();
+   
+    // Sagittal Patient
+    splitterSizeColumn.push_back(1000);
+    renderWindowWidget = amosWidget->GetRenderWindowWidget(0,2);
+    renderWindowWidget->GetRenderWindow()->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Axial); 
+    //renderWindowWidget->GetRenderWindow()->SetLayoutIndex(QmitkMxNMultiWidget::ViewDirection::SAGITTAL);
+    splitter->addWidget(renderWindowWidget.get());   
+    renderWindowWidget->show();
+
+    splitterSizeRow.push_back(1000);
+    auto splitter2 = new QSplitter(mainSplit);
+    
+    // Sagittal BC
+    splitterSizeColumn.push_back(1000);
+    renderWindowWidget = amosWidget->GetRenderWindowWidget(1,0);
+    renderWindowWidget->GetRenderWindow()->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Sagittal); 
+    //renderWindowWidget->GetRenderWindow()->SetLayoutIndex(QmitkMxNMultiWidget::ViewDirection::SAGITTAL);
+    splitter2->addWidget(renderWindowWidget.get());   
+    renderWindowWidget->show();
+
+    // Coronal
+    splitterSizeColumn.push_back(1000);
+    renderWindowWidget = amosWidget->GetRenderWindowWidget(1,1);
+    renderWindowWidget->GetRenderWindow()->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Frontal); 
+    //renderWindowWidget->GetRenderWindow()->SetLayoutIndex(QmitkMxNMultiWidget::ViewDirection::CORONAL);
+    splitter2->addWidget(renderWindowWidget.get());   
+    renderWindowWidget->show();
+
+    // 3D
+    splitterSizeColumn.push_back(1000);
+    renderWindowWidget = amosWidget->GetRenderWindowWidget(1,2);
+    splitter2->addWidget(renderWindowWidget.get());   
+    renderWindowWidget->show();
+
+    mainSplit->setSizes(splitterSizeRow);
+
+    m_MultiWidget->ActivateMenuWidget(true);
+
+    auto allRenderWindows = m_MultiWidget->GetRenderWindows();
+    for (auto& renderWindow : allRenderWindows)
+    {
+        renderWindow->UpdateLayoutDesignList(LayoutDesign::TWO_SAGITTAL_WITH_SEGMENTATION);
+    }  
+*/
+}
+
+void MyQmitkMultiWidgetLayoutManager::TwoAxialWithSegmentationLayout()
+{
+  MITK_INFO << "Two axial with segmentation layout. 6 windows AXIAL" << std::endl;
+
+    //Hide all Menu Widgets
+    m_MultiWidget->ActivateMenuWidget(false);
+
+    delete m_MultiWidget->layout();
+
+    auto hBoxLayout = new QHBoxLayout(m_MultiWidget);
+    hBoxLayout->setContentsMargins(0, 0, 0, 0);
+    m_MultiWidget->setLayout(hBoxLayout);
+    hBoxLayout->setMargin(0);
+
+    auto mainSplit = new QSplitter(Qt::Vertical, m_MultiWidget);
+    hBoxLayout->addWidget(mainSplit);
+
+    QList<int> splitterSizeRow;
+    for (int row = AXIAL_ROW_0; row <= AXIAL_ROW_1 /*m_MultiWidget->GetRowCount()*/; ++row)
     {
         splitterSizeRow.push_back(1000);
 
@@ -245,7 +395,7 @@ void MyQmitkMultiWidgetLayoutManager::SetACUpandBCDown()
 
 void MyQmitkMultiWidgetLayoutManager::SetDefaultLayout()
 {
-  MITK_INFO << "Set my default layout" << std::endl;
+  MITK_INFO << "Set my default layout: 4 windows Axial" << std::endl;
 
   m_MultiWidget->ActivateMenuWidget(false);
 
@@ -260,7 +410,7 @@ void MyQmitkMultiWidgetLayoutManager::SetDefaultLayout()
   hBoxLayout->addWidget(mainSplit);
 
   QList<int> splitterSizeRow;
-  for (int row = 0; row < m_MultiWidget->GetRowCount(); ++row)
+  for (int row = AXIAL_ROW_0; row <= AXIAL_ROW_1 /*m_MultiWidget->GetRowCount()*/; ++row)
   {
     splitterSizeRow.push_back(1000);
 

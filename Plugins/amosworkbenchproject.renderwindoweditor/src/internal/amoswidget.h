@@ -9,6 +9,16 @@
 // JCAM
 #include <QmitkMxNMultiWidget.h>
 
+/// JCAM
+// Define rows of each view
+#define AXIAL_ROW_0         0
+#define AXIAL_ROW_1         1
+#define SAGITTAL_ROW_0      2
+#define SAGITTAL_ROW_1      3
+#define CORONAL_ROW_0       4
+#define CORONAL_ROW_1       5
+
+
 // 
 // #include <QWidget>
 // #include <QSplitter>
@@ -176,7 +186,11 @@ public:
 //     void UpdateAllWidgets();
 //     void HideAllWidgetToolbars();
 //     QmitkLevelWindowWidget* GetLevelWindowWidget() { return levelWindowWidget; }        
-    
+        ///
+        void CreateAxialRenderWindowWidgets();    
+        void CreateSagittalRenderWindowWidgets();
+        void CreateCoronalRenderWindowWidgets();
+
 public slots:
 //     void OnLayoutDesignChanged(int layoutDesignIndex);
 //     void ResetViews();
@@ -266,8 +280,10 @@ protected:
    virtual void SetLayoutImpl() override;
    virtual void SetInteractionSchemeImpl() override { }
  
-   void CreateRenderWindowWidgets();    
-    
+//    void CreateAxialRenderWindowWidgets();    
+//    void CreateSagittalRenderWindowWidgets();
+//    void CreateCoronalRenderWindowWidgets();
+
 protected:
     
   /**
