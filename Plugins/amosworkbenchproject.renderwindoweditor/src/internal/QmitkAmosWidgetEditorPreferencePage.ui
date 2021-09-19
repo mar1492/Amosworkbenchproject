@@ -172,6 +172,66 @@
        <string>AmosMultiWidget3D</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetSagittalAC</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetSagittalAxial</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetSagittalPatient</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetSagittalBC</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetSagittalCoronal</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetSagittal3D</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetCoronalAC</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetCoronalSagittal</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetCoronalPatient</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetCoronalBC</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetCoronalAxial</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>AmosMultiWidgetCoronal3D</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="9" column="0">

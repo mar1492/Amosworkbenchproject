@@ -94,6 +94,11 @@ void MyQmitkMultiWidgetLayoutManager::TwoCoronalsWithSegments()
             splitterSizeColumn.push_back(1000);
             auto renderWindowWidget = m_MultiWidget->GetRenderWindowWidget(row, column);
             splitter->addWidget(renderWindowWidget.get());
+            
+            /// JCAM 19092021
+            // if (row == CORONAL_ROW_1 && column == 2)
+            //    mitk::BaseRenderer::GetInstance(renderWindowWidget->GetRenderWindow()->renderWindow())->SetMapperID(mitk::BaseRenderer::Standard3D);
+            ///
             renderWindowWidget->show();
         }
         splitter->setSizes(splitterSizeColumn);
