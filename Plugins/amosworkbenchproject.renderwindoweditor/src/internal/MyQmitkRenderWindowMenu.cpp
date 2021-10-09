@@ -450,7 +450,7 @@ void MyQmitkRenderWindowMenu::CreateSettingsWidget()
     m_2AxialsWithSegmentLayoutAction->setDisabled( false );    
     
     /* JCAM. Create 2 Sagittals with segments menu option */
-    m_2SagittalWithSegmentLayoutAction = new QAction( "2 Sagittals with segmentation", m_LayoutActionsMenu );
+    m_2SagittalWithSegmentLayoutAction = new QAction( "2 Sagittals with segments", m_LayoutActionsMenu );
     m_2SagittalWithSegmentLayoutAction->setDisabled( false );    
     
     /* JCAM. Create 2 Coranals with segments menu option */

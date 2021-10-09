@@ -89,17 +89,25 @@ void MyQmitkMultiWidgetLayoutManager::TwoCoronalsWithSegments()
         for (int column = 0; column < m_MultiWidget->GetColumnCount(); ++column)
         {
             // 3D View is only created in Axial view
-            //if (row == CORONAL_ROW_1 && column == 2)
-            //    continue;
-            splitterSizeColumn.push_back(1000);
-            auto renderWindowWidget = m_MultiWidget->GetRenderWindowWidget(row, column);
-            splitter->addWidget(renderWindowWidget.get());
-            
+            if (row == CORONAL_ROW_1 && column == 2)
+            {
+                splitterSizeColumn.push_back(1000);
+                auto renderWindowWidget = m_MultiWidget->GetRenderWindowWidget(AXIAL_ROW_1, column);
+                splitter->addWidget(renderWindowWidget.get());
+                 renderWindowWidget->show();
+           }
+            else
+            {
+                splitterSizeColumn.push_back(1000);
+                auto renderWindowWidget = m_MultiWidget->GetRenderWindowWidget(row, column);
+                splitter->addWidget(renderWindowWidget.get());
+                 renderWindowWidget->show();
+            }
             /// JCAM 19092021
             // if (row == CORONAL_ROW_1 && column == 2)
             //    mitk::BaseRenderer::GetInstance(renderWindowWidget->GetRenderWindow()->renderWindow())->SetMapperID(mitk::BaseRenderer::Standard3D);
             ///
-            renderWindowWidget->show();
+           
         }
         splitter->setSizes(splitterSizeColumn);
     }
@@ -143,13 +151,20 @@ void MyQmitkMultiWidgetLayoutManager::TwoSagittalsWithSegments()
         for (int column = 0; column < m_MultiWidget->GetColumnCount(); ++column)
         {
              // 3D View is only created in Axial view
-            //if (row == SAGITTAL_ROW_1 && column == 2)
-             //   continue;
- 
+            if (row == SAGITTAL_ROW_1 && column == 2)
+            {
+            splitterSizeColumn.push_back(1000);
+            auto renderWindowWidget = m_MultiWidget->GetRenderWindowWidget(AXIAL_ROW_1, 2);
+            splitter->addWidget(renderWindowWidget.get());
+            renderWindowWidget->show();
+            }
+            else
+            {
             splitterSizeColumn.push_back(1000);
             auto renderWindowWidget = m_MultiWidget->GetRenderWindowWidget(row, column);
             splitter->addWidget(renderWindowWidget.get());
             renderWindowWidget->show();
+            }
         }
         splitter->setSizes(splitterSizeColumn);
     }

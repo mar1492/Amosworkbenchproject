@@ -1136,10 +1136,10 @@ void AmosWidget::CreateSagittalRenderWindowWidgets()
     RenderWindowWidgetPointer renderWindowWidget4 = std::make_shared<MyQmitkRenderWindowWidget>(this, renderWindowWidgetName, GetDataStorage());
     auto renderWindow4 = renderWindowWidget4->GetRenderWindow();
     renderWindow4->GetSliceNavigationController()->SetDefaultViewDirection(mitk::SliceNavigationController::Original);
-    renderWindowWidget4->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_AXIAL_VIEW_AXIAL_3D));
+    renderWindowWidget4->SetDecorationColor(GetDecorationColor(WINDOW_WIDGET_SAGITTAL_VIEW_SAGITTAL_3D));
     renderWindowWidget4->SetCornerAnnotationText("3D Axial");
     renderWindowWidget4->GetRenderWindow()->SetLayoutIndex(ViewDirection::THREE_D);
-    
+  
      // MITK 2021
 //     mitk::BaseRenderer::GetInstance(renderWindowWidget4->GetRenderWindow()->GetRenderWindow())->SetMapperID(mitk::BaseRenderer::Standard3D);
     /// JCAM 19092021
