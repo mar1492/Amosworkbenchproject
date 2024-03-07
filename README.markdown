@@ -35,3 +35,9 @@ Requirements
 - CMake 3.2 or newer
 - Qt 5.0 to Qt 5.5
 - It is also possible to create an MITK project without any Qt dependencies
+
+Authors
+-------
+
+- José Manuel Cuadra Troncoso
+- Juan Carlos Andrés Marcos
